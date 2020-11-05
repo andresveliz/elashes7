@@ -239,7 +239,7 @@ return [
         ],
         [
             'text'        => 'Inicio',
-            'url'         => 'admin/pages',
+            'url'         => '#',
             'icon'        => 'fas fa-fw fa-home',
             'label'       => 4,
             'label_color' => 'success',
@@ -247,17 +247,17 @@ return [
         
         [
             'text' => 'Reservas',
-            'url'  => 'admin/settings',
+            'route'         => 'reservas.listar',
             'icon' => 'fas fa-fw fa-calendar',
         ],
         [
             'text' => 'Trabajos',
-            'url'  => 'admin/settings',
+            'route'  => 'trabajos.listar',
             'icon' => 'fas fa-fw fa-book',
         ],
         [
             'text' => 'Ventas',
-            'url'  => 'admin/settings',
+            'route'  => 'ventas.listar',
             'icon' => 'fas fa-fw fa-cart-plus',
         ],
         [
@@ -266,12 +266,21 @@ return [
             'icon' => 'fas fa-fw fa-cash-register',
         ],
         [
+            'text' => 'Operadores',
+            'route'  => 'operadores.listar',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
             'text'    => 'Productos',
             'icon'    => 'fas fa-fw fa-hand-holding-usd',
             'submenu' => [
                 [
+                    'text' => 'Productos',
+                    'route'  => 'productos.listar',
+                ],
+                [
                     'text' => 'Categorias',
-                    'url'  => '#',
+                    'route'  => 'categoria-producto.listar',
                 ],
                 
             ],
@@ -281,8 +290,13 @@ return [
             'icon'    => 'fas fa-fw fa-tags',
             'submenu' => [
                 [
+                    'text' => 'Servicios',
+                    'route'  => 'servicios.listar',
+                    
+                ],
+                [
                     'text' => 'Categorias',
-                    'url'  => '#',
+                    'route'  => 'categoria-servicio.listar',
                 ],
                 
             ],

@@ -20,3 +20,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('reservas','ReservaController@listar')->name('reservas.listar');
+
+Route::get('categoria-servicio','CategoriaServicioController@listar')->name('categoria-servicio.listar');
+
+Route::get('categoria-producto','CategoriaProductoController@listar')->name('categoria-producto.listar');
+
+Route::get('operadores','OperadorController@listar')->name('operadores.listar');
+
+Route::get('productos','productoController@listar')->name('productos.listar');
+
+Route::get('servicios','ServicioController@listar')->name('servicios.listar');
+
+Route::get('trabajos','TrabajoController@listar')->name('trabajos.listar');
+
+Route::get('ventas','VentaController@listar')->name('ventas.listar');

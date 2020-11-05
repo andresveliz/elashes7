@@ -3,21 +3,21 @@
 @section('title', 'Elashes')
 
 @section('content_header')
-    <h1>Codigos</h1>
+    <h1>Operadores</h1>
 @stop
 
 @section('content')
 <div id="app">
-<trabajos-component> </trabajos-component>
+<operadores-component> </operadores-component>
 </div>
 @stop
 
 @section('css')
-   
+    
     
 @stop
 
 @section('js')
-   
+
     
 @stop

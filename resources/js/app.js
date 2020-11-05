@@ -21,12 +21,41 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('reservas-component', require('./components/ReservasComponent.vue').default);
+Vue.component('categoriaservicios-component', require('./components/CategoriaServicioComponent.vue').default);
+Vue.component('categoriaproductos-component', require('./components/CategoriaProductoComponent.vue').default);
+Vue.component('operadores-component', require('./components/OperadoresComponent.vue').default);
+Vue.component('productos-component', require('./components/ProductosComponent.vue').default);
+Vue.component('servicios-component', require('./components/ServiciosComponent.vue').default);
+Vue.component('trabajos-component', require('./components/TrabajosComponent.vue').default);
+Vue.component('ventas-component', require('./components/VentasComponent.vue').default);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ import reservas from './components/ReservasComponent';
+ import categoriaservicios from './components/CategoriaServicioComponent';
+ import categoriaproductos from './components/CategoriaProductoComponent';
+ import operadores from './components/OperadoresComponent';
+ import productos from './components/ProductosComponent';
+ import servicios from './components/ServiciosComponent';
+ import trabajos from './components/TrabajosComponent';
+ import ventas from './components/VentasComponent';
+
 const app = new Vue({
     el: '#app',
+    component: {
+        reservas,
+        categoriaservicios,
+        categoriaproductos,
+        operadores,
+        productos,
+        servicios,
+        trabajos,
+        ventas
+    }
 });

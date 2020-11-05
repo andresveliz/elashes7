@@ -17,3 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('categoria-producto', 'CategoriaProductoController');
+
+Route::resource('categoria-servicio','CategoriaServicioController');
+
+Route::resource('operador','OperadorController');
+
+Route::resource('producto','ProductoController');
+
+Route::resource('reserva','ReservaController');
+Route::patch('reserva/cambiar-estado/{id}','ReservaController@cambiarEstado');
+
+Route::resource('servicio','ServicioController');
+
+Route::resource('trabajo','TrabajoController');
+
+Route::resource('venta','VentaController');
