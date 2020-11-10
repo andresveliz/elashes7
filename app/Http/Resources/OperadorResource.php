@@ -20,7 +20,8 @@ class OperadorResource extends JsonResource
             'apellido' => $this->apellido,
             'ci' => $this->ci,
             'celular' => $this->celular,
-            'direccion' => $this->direccion
+            'direccion' => $this->direccion,
+            'trabajos' => $this->trabajos
         ];
     }
 }

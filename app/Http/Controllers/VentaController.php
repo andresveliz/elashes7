@@ -7,6 +7,7 @@ use App\Http\Resources\VentaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
+use Carbon\Carbon;
 
 class VentaController extends Controller
 {
@@ -43,7 +44,7 @@ class VentaController extends Controller
             'nombre' => 'required|string',
             'apellido' => 'required|string',
             'fecha' => 'required',
-            'user_id' => 'required|integer'
+           // 'user_id' => 'required|integer'
         ]);
 
         try {
@@ -52,14 +53,18 @@ class VentaController extends Controller
             $venta = new Venta();
             $venta->nombre = $request->nombre;
             $venta->apellido = $request->apellido;
-            $venta->fecha = $request->fecha;
+            $venta->fecha = Carbon::parse($request->fecha)->format('Y-m-d');
             $venta->total = $request->total;
-            $venta->user_id = $request->user_id;
+            $venta->user_id = 1;
             $venta->operador_id = $request->operador_id;
 
             $venta->save();
 
-            
+            $productos = $request->productos ? $request->productos : [];
+           // $venta->productos()->sync($productos);
+           foreach($productos as $p){
+            $venta->productos()->attach(1,['producto_id'=>$p[0], 'cantidad' =>$p[1], 'sub_total' =>$p[2]]);
+            }
             DB::commit();
 
             return response()->json([

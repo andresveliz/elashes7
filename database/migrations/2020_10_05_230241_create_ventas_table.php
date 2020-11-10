@@ -25,7 +25,7 @@ class CreateVentasTable extends Migration
             $table->softDeletes();
         });
         Schema::table('ventas', function (Blueprint $table) {
-            $table->foreignId('operador_id')->constrained('operadores')->nullable()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('operador_id')->nullable()->constrained('operadores');
         });
     }
 

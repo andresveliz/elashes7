@@ -198,7 +198,7 @@
         </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="crear()">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="crear()">Registrar Venta</button>
             </div>
           </div>
           </div> 
@@ -348,6 +348,17 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
+        },
+        getOperadores(){
+            let me = this;
+            axios.get('http://127.0.0.1:8012/api/operador')
+            .then(function(response){
+                me.operadores = response.data.data
+                console.log(response.data)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
         }
 
     },
@@ -355,7 +366,9 @@ export default {
     mounted(){
         this.listar();
         this.getProductos();
+        this.getOperadores();
         console.log('categorias')
+        
     }
 }
 </script>

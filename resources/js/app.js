@@ -29,6 +29,7 @@ Vue.component('productos-component', require('./components/ProductosComponent.vu
 Vue.component('servicios-component', require('./components/ServiciosComponent.vue').default);
 Vue.component('trabajos-component', require('./components/TrabajosComponent.vue').default);
 Vue.component('ventas-component', require('./components/VentasComponent.vue').default);
+Vue.component('reportes-component', require('./components/ReportesComponent.vue').default);
 
 
 /**
@@ -45,6 +46,10 @@ Vue.component('ventas-component', require('./components/VentasComponent.vue').de
  import servicios from './components/ServiciosComponent';
  import trabajos from './components/TrabajosComponent';
  import ventas from './components/VentasComponent';
+ import reportes from './components/ReportesComponent';
+
+ import Vuelidate from 'vuelidate'
+ Vue.use(Vuelidate)
 
 const app = new Vue({
     el: '#app',
@@ -56,6 +61,7 @@ const app = new Vue({
         productos,
         servicios,
         trabajos,
-        ventas
+        ventas,
+        reportes
     }
 });

@@ -262,7 +262,7 @@ return [
         ],
         [
             'text' => 'Reportes',
-            'url'  => 'admin/settings',
+            'route'  => 'reportes.listar',
             'icon' => 'fas fa-fw fa-cash-register',
         ],
         [

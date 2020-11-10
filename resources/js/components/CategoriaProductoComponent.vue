@@ -4,14 +4,21 @@
     <div class="col-md-12 col-xl-12 col-lg-12">
         <small class="f-s-12 text-grey-darker">Agregar una nueva categoria</small>
         <div class="input-group">
-            <input type="text" v-model="categoria.nombre" class="form-control col-xl-4" placeholder="Nombre">
+            <input 
+            type="text" 
+            v-model.trim="$v.categoria.nombre.$model" 
+            class="form-control col-xl-4"
+            :class="{ 'is-invalid': $v.categoria.nombre.$error, 'is-valid': !$v.categoria.nombre.$invalid }" 
+            placeholder="Nombre">
             <input type="text" v-model="categoria.descripcion" class="form-control" placeholder="Descripcion">
             <div class="input-group-append">
-                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()"><i class="fa fa-plus"></i> Agregar Categoria</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()"><i class="fa fa-edit"></i> Guardar Cambios</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; categoria.nombre=''; categoria.descripcion=''"><i class="fa fa-times"></i></button>
+                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()" :disabled="$v.$invalid"><i class="fa fa-plus"></i> Agregar Categoria</button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()" :disabled="$v.$invalid"><i class="fa fa-edit"></i> Guardar Cambios</button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; categoria.nombre=''; categoria.descripcion=''; $v.categoria.nombre.$reset()"><i class="fa fa-times"></i></button>
             </div>
+             <div class="invalid-feedback" v-if="!$v.categoria.nombre.required" >Campo Requerido</div>
         </div>
+       
     </div>   
 </div> <br>
     <div class="card">
@@ -25,7 +32,7 @@
             <tr>
                 <th style="width: 20px">#</th>
                 <th>Nombre</th>
-                <th>Color</th>
+                <th>Descripcion</th>
                 <th>Accion</th>
             </tr>
             </thead>
@@ -59,7 +66,7 @@
               <p>Eliminar la categoria '{{categoria.nombre}}'?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="boton = 'crear'; categoria.nombre=''; categoria.descripcion=''; $v.categoria.nombre.$reset()">Cancelar</button>
               <button type="button" class="btn btn-primary" @click="eliminar(categoria.id)">Eliminar</button>
             </div>
           </div>
@@ -73,6 +80,8 @@
 <script>
 import Vue from 'vue';
 
+import { required } from 'vuelidate/lib/validators'
+
 export default {
     data(){
         return {
@@ -82,7 +91,13 @@ export default {
                 nombre: '',
                 descripcion: ''
             },
+            submitStatus: null,
             boton: 'crear',
+        }
+    },
+    validations:{
+        categoria:{
+            nombre: {required}
         }
     },
     methods: {
@@ -107,6 +122,7 @@ export default {
                 me.categoria.nombre = '';
                 me.categoria.descripcion = '';
                 me.listar();
+                me.$v.$reset();
             })
             .catch(function(error){
                 console.log(error)
@@ -123,6 +139,7 @@ export default {
                 me.categoria.descripcion = '';
                 me.boton= 'crear'
                 me.listar();
+                me.$v.$reset();
             })
             .catch(function(error){
                 console.log(error)
@@ -137,6 +154,7 @@ export default {
         confirmar(categoria){
             this.categoria.id = categoria.id;
             this.categoria.nombre = categoria.nombre;
+            this.boton = 'editar';
             $('#confirmar').modal({backdrop: 'static', keyboard: false, show: true});
         },
         eliminar(id){
@@ -151,7 +169,8 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
-        }
+        },
+
     },
 
     mounted(){

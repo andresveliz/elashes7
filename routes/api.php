@@ -34,3 +34,5 @@ Route::resource('servicio','ServicioController');
 Route::resource('trabajo','TrabajoController');
 
 Route::resource('venta','VentaController');
+
+Route::resource('reporte','ReporteController');

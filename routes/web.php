@@ -36,3 +36,5 @@ Route::get('servicios','ServicioController@listar')->name('servicios.listar');
 Route::get('trabajos','TrabajoController@listar')->name('trabajos.listar');
 
 Route::get('ventas','VentaController@listar')->name('ventas.listar');
+
+Route::get('reportes','ReporteController@listar')->name('reportes.listar');
