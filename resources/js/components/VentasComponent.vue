@@ -70,7 +70,7 @@
               <p>Eliminar venta '{{venta.nombre}}'?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
               <button type="button" class="btn btn-primary" @click="eliminar(venta.id)">Eliminar</button>
             </div>
           </div>
@@ -92,28 +92,38 @@
             <div class="row"> 
             <div class="col-md-5">
             <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="venta.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.venta.nombre.$model" 
+                :class="{ 'is-invalid': $v.venta.nombre.$error, 'is-valid': !$v.venta.nombre.$invalid }" 
+                class="form-control" 
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.venta.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="venta.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.venta.apellido.$model" 
+                :class="{ 'is-invalid': $v.venta.apellido.$error, 'is-valid': !$v.venta.apellido.$invalid }"
+                class="form-control" 
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.venta.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             </div>
             <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="form-group">
                 <label>Fecha</label>
                 <datepicker :use-utc="true" :language="es" v-model="venta.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="form-group">
                 <label>Operador</label>
                 <select
@@ -129,52 +139,60 @@
             </div>
             </div> 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                 <div class="form-group">
                 <label>Total:</label>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="form-group">
-                <input type="text" v-model="venta.total" class="form-control" placeholder="0" >
+                <input type="text" v-model="venta.total" class="form-control" placeholder="0" disabled>
                 </div>
             </div>
             </div>
 
             </div>
-        <div class="col-md-7">
+            <div class="col-md-7">
             <div class="card">
             <div class="car-body">
             <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="form-group">
                 <label>Producto</label>
                 <select
                     class="form-control"
-                    v-model="producto.id"
+                    :class="{ 'is-invalid': $v.producto.id.$error, 'is-valid': !$v.producto.id.$invalid }"
+                    v-model="$v.producto.id.$model"
                 >
-                <option disabled value="">Producto</option>
+                <option disabled value="">Productos</option>
                 <option v-for="producto in productos" v-bind:value="{id:producto.id, nombre: producto.nombre, precio: producto.precio}" :key="producto.id">
                     {{ producto.nombre }}
                 </option>
                 </select>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-group">
                 <label>Cantidad</label>
-                <input type="number" v-model="producto.cantidad" class="form-control" placeholder="Apellido" >
+                <input type="number" 
+                v-model="$v.producto.cantidad.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.producto.cantidad.$error, 'is-valid': !$v.producto.cantidad.$invalid }"
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.venta.apellido.minValue" >Campo numero positivo</div>
                 </div>
+                
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Agregar</label><br>
-                <button type="button" class="btn btn-default" @click="agregarProducto()"><i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-default" @click="agregarProducto()" :disabled="$v.producto.$invalid"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
             </div>
             <div class="row">
-                <table class="table">
+                <div class="col-sm-10">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -190,6 +208,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
             </div>
             </div>
@@ -197,8 +216,8 @@
        
         </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="crear()">Registrar Venta</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
+              <button type="button" class="btn btn-primary" @click="crear()" :disabled="$v.$invalid">Registrar Venta</button>
             </div>
           </div>
           </div> 
@@ -213,6 +232,7 @@
 import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
+import { required, numeric, minValue } from 'vuelidate/lib/validators'
 var moment = require('moment');
 export default {
     components:{
@@ -227,6 +247,7 @@ export default {
             operadores: [],
             pVentas:[],
             producto: {
+                id:'',
                 producto_id: '',
                 nombre: '',
                 venta_id: '',
@@ -246,10 +267,22 @@ export default {
             boton: 'crear',
         }
     },
+    validations: {
+        venta: {
+            nombre: {required},
+            apellido: {required},
+            fecha: {required},
+
+        },
+        producto: {
+            id: {required},
+            cantidad: {required, minValue: minValue(1)}
+        }
+    },
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/venta')
+            axios.get('/api/venta')
             .then(function(response){
                 me.ventas = response.data.data
                 console.log(response.data)
@@ -260,7 +293,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/venta/',{
+            axios.post('/api/venta/',{
                 'nombre': me.venta.nombre,
                 'apellido': me.venta.apellido,
                 'fecha': me.venta.fecha,
@@ -278,42 +311,40 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/servicio/'+ me.servicio.id,{
-                'nombre': me.servicio.nombre,
-                'precio': me.servicio.precio,
-                'descripcion': me.servicio.descripcion,
-                'comision': me.servicio.comision,
-                'descuento': me.servicio.descuento,
-                'categoria_servicio_id': me.servicio.categoria_servicio_id
+            axios.put('/api/venta/'+ me.venta.id,{
+                'nombre': me.venta.nombre,
+                'apellido': me.venta.apellido,
+                'fecha': me.venta.fecha,
+                'operador_id': me.venta.operador_id,
+                'total': me.venta.total,
+                
                 
             })
             .then(function(response){
                 me.limpiar();
-                me.boton= 'crear'
                 me.listar();
             })
             .catch(function(error){
                 console.log(error)
             })
         },
-        editar(servicio){
-            this.servicio.id = servicio.id;
-            this.servicio.nombre = servicio.nombre;
-            this.servicio.precio = servicio.precio;
-            this.servicio.descripcion = servicio.descripcion;
-            this.servicio.comision = servicio.comision;
-            this.servicio.descuento = servicio.descuento;
-            this.servicio.categoria_servicio_id = servicio.categoria_id;
-            this.boton = 'editar';
+        editar(venta){
+            this.venta.id = venta.id;
+            this.venta.nombre = venta.nombre;
+            this.venta.apellido = venta.apellido;
+            this.venta.fecha = venta.fecha;
+            this.venta.operador_id = venta.operador_id;
+            this.venta.total = venta.total;
+            
         },
-        confirmar(servicio){
-            this.servicio.id = servicio.id;
-            this.servicio.nombre = servicio.nombre;
+        confirmar(venta){
+            this.venta.id = venta.id;
+            this.venta.nombre = venta.nombre;
             $('#confirmar').modal({backdrop: 'static', keyboard: false, show: true});
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/servicio/'+id)
+            axios.delete('/api/venta/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.limpiar();
@@ -331,16 +362,19 @@ export default {
             console.log(this.venta.productos)
         },
         limpiar(){
-            this.servicio.nombre = '';
-            this.servicio.precio = '';
-            this.servicio.descripcion = '';
-            this.servicio.comision = '';
-            this.servicio.descuento = '';
-            this.servicio.categoria_servicio_id = '';
+            this.venta.nombre = '';
+            this.venta.apellido = '';
+            this.venta.fecha = '';
+            this.venta.total = '';
+            this.venta.operador_id = '';
+            this.producto.id = '';
+            this.producto.cantidad = '',
+            this.$v.venta.$reset();
+            this.$v.producto.$reset();
         },
         getProductos(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/producto')
+            axios.get('/api/producto')
             .then(function(response){
                 me.productos = response.data.data
                 console.log(response.data)
@@ -351,7 +385,7 @@ export default {
         },
         getOperadores(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/operador')
+            axios.get('/api/operador')
             .then(function(response){
                 me.operadores = response.data.data
                 console.log(response.data)

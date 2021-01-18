@@ -30,7 +30,19 @@ Vue.component('servicios-component', require('./components/ServiciosComponent.vu
 Vue.component('trabajos-component', require('./components/TrabajosComponent.vue').default);
 Vue.component('ventas-component', require('./components/VentasComponent.vue').default);
 Vue.component('reportes-component', require('./components/ReportesComponent.vue').default);
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
 
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -62,6 +74,6 @@ const app = new Vue({
         servicios,
         trabajos,
         ventas,
-        reportes
+        reportes,
     }
 });

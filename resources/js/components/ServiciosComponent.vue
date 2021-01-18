@@ -10,13 +10,24 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="servicio.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.servicio.nombre.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.servicio.nombre.$error, 'is-valid': !$v.servicio.nombre.$invalid }"
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.servicio.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-1">
                 <div class="form-group">
                 <label>Precio</label>
-                <input type="text" v-model="servicio.precio" class="form-control" placeholder="Precio" >
+                <input type="text" 
+                v-model.trim="$v.servicio.precio.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.servicio.precio.$error, 'is-valid': !$v.servicio.precio.$invalid }"
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.servicio.precio.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.servicio.precio.minValue" >El precio debe ser mayor a 0</div>
                 </div>
             </div>
             <div class="col-sm-3">
@@ -28,13 +39,19 @@
             <div class="col-sm-1">
                 <div class="form-group">
                 <label>Comision</label>
-                <input type="text" v-model="servicio.comision" class="form-control" placeholder="Comision" >
+                <input type="text" 
+                v-model.trim="$v.servicio.comision.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.servicio.comision.$error, 'is-valid': !$v.servicio.comision.$invalid }" 
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.servicio.comision.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.servicio.comision.minValue" >El campo debe ser mayor a 0</div>
                 </div>
             </div>
             <div class="col-sm-1">
                 <div class="form-group">
                 <label>Descuento</label>
-                <input type="text" v-model="servicio.descuento" class="form-control" placeholder="Descuento" >
+                <input type="text" v-model="servicio.descuento" class="form-control" placeholder="0,0" >
                 </div>
             </div>
             <div class="col-sm-2">
@@ -42,7 +59,7 @@
                 <label>Categoria</label>
                 <select
                     class="form-control"
-                    v-model="servicio.categoria_servicio_id"
+                    v-model="$v.servicio.categoria_servicio_id.$model"
                 >
                 <option disabled value="">Categorias</option>
                 <option v-for="categoria in categorias" v-bind:value="categoria.id" :key="categoria.id">
@@ -56,9 +73,9 @@
                 <div class="form-group">
                 <label><i class="fa fa-arrow-down"></i></label>
                 <div class="input-group-append">
-                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()"><i class="fa fa-plus"></i> Agregar servicio</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()"><i class="fa fa-edit"></i> Guardar Cambios</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; limpiar()"><i class="fa fa-times"></i></button>
+                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()" :disabled="$v.$invalid"><i class="fa fa-plus"></i> Agregar servicio</button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()" :disabled="$v.$invalid"><i class="fa fa-edit"></i> Guardar Cambios</button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; limpiar()" ><i class="fa fa-times"></i></button>
                 </div>
                 </div>
             </div>
@@ -134,7 +151,7 @@
 
 <script>
 import Vue from 'vue';
-
+import { required, minValue } from 'vuelidate/lib/validators'
 export default {
     data(){
         return {
@@ -152,10 +169,18 @@ export default {
             boton: 'crear',
         }
     },
+    validations:{
+        servicio:{
+            nombre: {required},
+            precio: {required, minValue: minValue(1)},
+            comision: {required, minValue :minValue(1)},
+            categoria_servicio_id: {required}
+        }
+    },
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/servicio')
+            axios.get('/api/servicio')
             .then(function(response){
                 me.servicios = response.data.data
                 console.log(response.data)
@@ -166,7 +191,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/servicio/',{
+            axios.post('/api/servicio/',{
                 'nombre': me.servicio.nombre,
                 'precio': me.servicio.precio,
                 'descripcion': me.servicio.descripcion,
@@ -184,7 +209,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/servicio/'+ me.servicio.id,{
+            axios.put('/api/servicio/'+ me.servicio.id,{
                 'nombre': me.servicio.nombre,
                 'precio': me.servicio.precio,
                 'descripcion': me.servicio.descripcion,
@@ -219,7 +244,7 @@ export default {
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/servicio/'+id)
+            axios.delete('/api/servicio/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.limpiar();
@@ -236,10 +261,11 @@ export default {
             this.servicio.comision = '';
             this.servicio.descuento = '';
             this.servicio.categoria_servicio_id = '';
+            this.$v.servicio.$reset();
         },
         getCategorias(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/categoria-servicio')
+            axios.get('/api/categoria-servicio')
             .then(function(response){
                 me.categorias = response.data.data
                 console.log(response.data)

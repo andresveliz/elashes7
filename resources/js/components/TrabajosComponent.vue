@@ -16,7 +16,6 @@
                 <th>Nombre</th>
                 <th>Celular</th>
                 <th>Fecha</th>
-                <th>Hora</th>
                 <th>Servicio</th>
                 <th>Operador</th>
                 <th>Codigo</th>
@@ -28,10 +27,9 @@
                 <td>{{index+1}}</td>
                 <td>{{trabajo.nombre}} {{trabajo.apellido}}</td>
                 <td>{{trabajo.celular}}</td>
-                <td>{{trabajo.fecha}}</td>
-                <td>{{trabajo.hora}}</td>
+                <td>{{trabajo.fecha}} {{trabajo.hora}}</td>
                 <td>{{trabajo.servicio.nombre}}</td>
-                <td>{{trabajo.operador.nombre}} {{trabajo.operador.apellido}}</td>
+                <td>{{trabajo.operador.nombre}}</td>
                 <td>{{trabajo.codigo}}</td>
                 <td>
                     <button type="button" class="btn btn-info " @click="info(trabajo)" ><i class="fa fa-info"></i></button>
@@ -59,7 +57,7 @@
               <p>Eliminar trabajo del cliente: '{{trabajo.nombre}} {{trabajo.apellido}}'?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
               <button type="button" class="btn btn-primary" @click="eliminar(trabajo.id)">Eliminar</button>
             </div>
           </div>
@@ -84,19 +82,35 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="trabajo.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.trabajo.nombre.$model" 
+                :class="{ 'is-invalid': $v.trabajo.nombre.$error, 'is-valid': !$v.trabajo.nombre.$invalid }"
+                class="form-control" 
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.trabajo.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="trabajo.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.trabajo.apellido.$model" 
+                :class="{ 'is-invalid': $v.trabajo.apellido.$error, 'is-valid': !$v.trabajo.apellido.$invalid }"
+                class="form-control" 
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="trabajo.celular" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model="$v.trabajo.celular.$model" 
+                :class="{ 'is-invalid': $v.trabajo.celular.$error, 'is-valid': !$v.trabajo.celular.$invalid }"
+                class="form-control" 
+                placeholder="Celular" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.celular.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.trabajo.celular.numeric" >Campo Numerico</div>
                 </div>
             </div>
             </div>
@@ -107,10 +121,14 @@
                 <datepicker :use-utc="true" :language="es" v-model="trabajo.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2.5">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="trabajo.hora" class="form-control">
+                <input type="time" 
+                v-model="$v.trabajo.hora.$model" 
+                :class="{ 'is-invalid': $v.trabajo.hora.$error, 'is-valid': !$v.trabajo.hora.$invalid }"
+                class="form-control">
+                <div class="invalid-feedback" v-if="!$v.trabajo.hora.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -118,7 +136,7 @@
                 <label>Servicio</label>
                 <select
                     class="form-control"
-                    v-model="trabajo.servicio_id"
+                    v-model="$v.trabajo.servicio_id.$model"
                 >
                 <option disabled value="">Servicio</option>
                 <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
@@ -132,7 +150,7 @@
                 <label>Operador</label>
                 <select
                     class="form-control"
-                    v-model="trabajo.operador_id"
+                    v-model="$v.trabajo.operador_id.$model"
                 >
                 <option disabled value="">Operador</option>
                 <option v-for="operador in operadores" v-bind:value="operador.id" :key="operador.id">
@@ -152,8 +170,8 @@
         </form>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="crear()">Guardar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
+              <button type="button" class="btn btn-primary" @click="crear()" :disabled="$v.$invalid">Guardar</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -177,19 +195,35 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="trabajo.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.trabajo.nombre.$model" 
+                :class="{ 'is-invalid': $v.trabajo.nombre.$error, 'is-valid': !$v.trabajo.nombre.$invalid }"
+                class="form-control" 
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.trabajo.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="trabajo.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.trabajo.apellido.$model" 
+                :class="{ 'is-invalid': $v.trabajo.apellido.$error, 'is-valid': !$v.trabajo.apellido.$invalid }"
+                class="form-control" 
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="trabajo.celular" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model.trim="$v.trabajo.celular.$model"
+                :class="{ 'is-invalid': $v.trabajo.celular.$error, 'is-valid': !$v.trabajo.celular.$invalid }" 
+                class="form-control" 
+                placeholder="Celular" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.celular.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.trabajo.celular.numeric" >Campo Numerico</div>
                 </div>
             </div>
             </div>
@@ -200,10 +234,13 @@
                 <datepicker :use-utc="true" :language="es" v-model="trabajo.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2.5">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="trabajo.hora" class="form-control">
+                <input type="time" 
+                v-model="$v.trabajo.hora.$model" 
+                :class="{ 'is-invalid': $v.trabajo.hora.$error, 'is-valid': !$v.trabajo.hora.$invalid }" 
+                class="form-control">
                 </div>
             </div>
             <div class="col-sm-4">
@@ -211,7 +248,7 @@
                 <label>Servicio</label>
                 <select
                     class="form-control"
-                    v-model="trabajo.servicio_id"
+                    v-model="$v.trabajo.servicio_id.$model"
                 >
                 <option disabled value="">Servicio</option>
                 <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
@@ -225,7 +262,7 @@
                 <label>Operador</label>
                 <select
                     class="form-control"
-                    v-model="trabajo.operador_id"
+                    v-model="$v.trabajo.operador_id.$model"
                 >
                 <option disabled value="">Operador</option>
                 <option v-for="operador in operadores" v-bind:value="operador.id" :key="operador.id">
@@ -246,7 +283,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar()">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="actualizar(trabajo)">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="actualizar(trabajo)" :disabled="$v.$invalid">Guardar</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -356,6 +393,7 @@
 import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
+import { required, numeric, minValue } from 'vuelidate/lib/validators'
 var moment = require('moment');
 export default {
     components:{
@@ -384,10 +422,20 @@ export default {
             boton: 'crear',
         }
     },
+    validations:{
+        trabajo:{
+            nombre: {required},
+            apellido: {required},
+            celular: {required, numeric},
+            hora: {required},
+            servicio_id: {required},
+            operador_id: {required} 
+        }
+    },
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/trabajo')
+            axios.get('/api/trabajo')
             .then(function(response){
                 me.trabajos = response.data.data
                 console.log(response.data)
@@ -398,7 +446,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/trabajo/',{
+            axios.post('/api/trabajo/',{
                 'nombre': me.trabajo.nombre,
                 'apellido': me.trabajo.apellido,
                 'celular': me.trabajo.celular,
@@ -419,7 +467,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/trabajo/'+ me.trabajo.id,{
+            axios.put('/api/trabajo/'+ me.trabajo.id,{
                 'nombre': me.trabajo.nombre,
                 'apellido': me.trabajo.apellido,
                 'celular': me.trabajo.celular,
@@ -479,7 +527,7 @@ export default {
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/trabajo/'+id)
+            axios.delete('/api/trabajo/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.limpiar();
@@ -498,10 +546,11 @@ export default {
             this.trabajo.detalle = '';
             this.trabajo.servicio_id = '';
             this.trabajo.operador_id = '';
+            this.$v.trabajo.$reset()
         },
         getServicios(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/servicio')
+            axios.get('/api/servicio')
             .then(function(response){
                 me.servicios = response.data.data
                 console.log(response.data)
@@ -512,7 +561,7 @@ export default {
         },
         getOperadores(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/operador')
+            axios.get('/api/operador')
             .then(function(response){
                 me.operadores = response.data.data
                 console.log(response.data)

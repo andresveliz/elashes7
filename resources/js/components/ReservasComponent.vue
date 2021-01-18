@@ -21,19 +21,35 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="reserva.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.reserva.nombre.$model"
+                :class="{ 'is-invalid': $v.reserva.nombre.$error, 'is-valid': !$v.reserva.nombre.$invalid }" 
+                class="form-control" 
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.reserva.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="reserva.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.reserva.apellido.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.reserva.apellido.$error, 'is-valid': !$v.reserva.apellido.$invalid }"
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.reserva.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="reserva.celular" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model="$v.reserva.celular.$model"
+                :class="{ 'is-invalid': $v.reserva.celular.$error, 'is-valid': !$v.reserva.celular.$invalid }" 
+                class="form-control" 
+                placeholder="Celular" >
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.numeric" >Campo Numerico</div>
                 </div>
             </div>
             </div>
@@ -41,13 +57,17 @@
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Fecha</label>
-                <datepicker v-model="reserva.fecha" input-class="form-control"></datepicker>
+                <datepicker :use-utc="true" :language="es" v-model="reserva.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2.5">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="reserva.hora" class="form-control">
+                <input type="time" 
+                v-model="$v.reserva.hora.$model"
+                :class="{ 'is-invalid': $v.reserva.hora.$error, 'is-valid': !$v.reserva.hora.$invalid }" 
+                class="form-control">
+                <div class="invalid-feedback" v-if="!$v.reserva.hora.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -55,7 +75,7 @@
                 <label>Servicio</label>
                 <select
                     class="form-control"
-                    v-model="reserva.servicio_id"
+                    v-model="$v.reserva.servicio_id.$model"
                 >
                 <option disabled value="">Servicios</option>
                 <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
@@ -76,7 +96,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="crear()">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="crear()" :disabled="$v.$invalid">Guardar</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -100,19 +120,35 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="reserva.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.reserva.nombre.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.reserva.nombre.$error, 'is-valid': !$v.reserva.nombre.$invalid }"
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.reserva.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="reserva.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.reserva.apellido.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.reserva.apellido.$error, 'is-valid': !$v.reserva.apellido.$invalid }" 
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.reserva.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="reserva.celular" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model.trim="$v.reserva.celular.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.reserva.celular.$error, 'is-valid': !$v.reserva.celular.$invalid }"
+                placeholder="Celular" >
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.numeric" >Campo Numerico</div>
                 </div>
             </div>
             </div>
@@ -120,13 +156,17 @@
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Fecha</label>
-                <datepicker v-model="reserva.fecha" input-class="form-control"></datepicker>
+                <datepicker :use-utc="true" :language="es" v-model="reserva.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2.5">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="reserva.hora" class="form-control">
+                <input type="time" 
+                v-model="$v.reserva.hora.$model" 
+                :class="{ 'is-invalid': $v.reserva.hora.$error, 'is-valid': !$v.reserva.hora.$invalid }"
+                class="form-control">
+                <div class="invalid-feedback" v-if="!$v.reserva.hora.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -134,7 +174,7 @@
                 <label>Servicio</label>
                 <select
                     class="form-control"
-                    v-model="reserva.servicio_id"
+                    v-model="$v.reserva.servicio_id.$model"
                 >
                 <option disabled value="">Servicios</option>
                 <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
@@ -156,8 +196,9 @@
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
               <div v-if="reserva.estado == 'pendiente' ">
-              <button type="button" class="btn btn-success"  @click="modalConfirmar(reserva)">Confirmar Reserva</button>
-              <button type="button" class="btn btn-secondary" @click="actualizar(reserva)">Guardar</button>
+              <button type="button" class="btn btn-success"  @click="modalConfirmar(reserva)" :disabled="$v.$invalid">Confirmar Reserva</button>
+              <button type="button" class="btn btn-secondary" @click="actualizar(reserva)" :disabled="$v.$invalid">Guardar</button>
+              <button type="button" class="btn btn-danger" @click="confirmar(reserva)"><i class="fa fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -182,19 +223,35 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="reserva.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.reserva.nombre.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.reserva.nombre.$error, 'is-valid': !$v.reserva.nombre.$invalid }" 
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.reserva.nombre.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="reserva.apellido" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.reserva.apellido.$model" 
+                :class="{ 'is-invalid': $v.reserva.apellido.$error, 'is-valid': !$v.reserva.apellido.$invalid }" 
+                class="form-control" 
+                placeholder="Apellido" >
+                <div class="invalid-feedback" v-if="!$v.reserva.apellido.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="reserva.celular" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model.trim="$v.reserva.celular.$model" 
+                :class="{ 'is-invalid': $v.reserva.celular.$error, 'is-valid': !$v.reserva.celular.$invalid }"
+                class="form-control" 
+                placeholder="Celular" >
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.numeric" >Campo Numerico</div>
                 </div>
             </div>
             </div>
@@ -205,10 +262,14 @@
                 <datepicker :use-utc="true" :language="es" v-model="reserva.fecha" input-class="form-control"></datepicker>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2.5">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="reserva.hora" class="form-control">
+                <input type="time" 
+                v-model="$v.reserva.hora.$model"
+                :class="{ 'is-invalid': $v.reserva.hora.$error, 'is-valid': !$v.reserva.hora.$invalid }" 
+                class="form-control">
+                <div class="invalid-feedback" v-if="!$v.reserva.celular.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -216,7 +277,7 @@
                 <label>Servicio</label>
                 <select
                     class="form-control"
-                    v-model="reserva.servicio_id"
+                    v-model="$v.reserva.servicio_id.$model"
                 >
                 <option disabled value="">Servicio</option>
                 <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
@@ -230,13 +291,14 @@
                 <label>Operador</label>
                 <select
                     class="form-control"
-                    v-model="reserva.operador_id"
+                    v-model="$v.reserva.operador_id.$model"
                 >
                 <option disabled value="">Operador</option>
                 <option v-for="operador in operadores" v-bind:value="operador.id" :key="operador.id">
                     {{ operador.nombre }}
                 </option>
                 </select>
+                <div class="invalid-feedback" v-if="!$v.reserva.operador_id.required" >Campo Requerido</div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -251,7 +313,29 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal" @click="cerrar()">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="confirmarReserva">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="confirmarReserva" :disabled="$v.$invalid">Guardar</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+        <!--modal-confirmar la eliminacion -->
+      <div class="modal fade" id="confirmar">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Peligro!!</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Eliminar reserva del cliente: '{{reserva.nombre}}'?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
+              <button type="button" class="btn btn-primary" @click="eliminar(reserva.id)">Eliminar</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -272,7 +356,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { formatDate } from '@fullcalendar/core';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
-
+import { required, numeric, minValue } from 'vuelidate/lib/validators'
 export default {
   components: {
     FullCalendar,// make the <FullCalendar> tag available
@@ -286,6 +370,7 @@ export default {
         servicios: [],
         pruebas: [],
         operadores: [],
+        hasOperador: false,
         reserva: {
             id: '',
             nombre: '',
@@ -329,6 +414,31 @@ export default {
       }
     } 
   },
+  validations(){
+      if(!this.hasOperador){
+          return{
+            reserva: {
+                nombre: {required},
+                apellido: {required},
+                celular: {required,numeric},
+                hora: {required},
+                servicio_id: {required},
+                operador_id: {}
+            }
+            }
+      }else{
+           return{
+            reserva: {
+                nombre: {required},
+                apellido: {required},
+                celular: {required,numeric},
+                hora: {required},
+                servicio_id: {required},
+                operador_id: {required}
+            }
+            }
+      }
+  },
   methods: {
 
       handleDateClick: function(arg, calendar) {
@@ -336,13 +446,7 @@ export default {
         this.reserva.fecha = formatDate(arg.date, {
                                 year: 'numeric',
                                 month: 'short',
-                                day: 'numeric',
-                        hour: 'numeric',
-                        minute: '2-digit',
-                                //timeZoneName: 'short',
-                                timeZone: 'UTC',
-                                locale: 'es',
-                                
+                                day: 'numeric',         
                                 })
         
         this.reserva.hora = formatDate(arg.date, {
@@ -369,15 +473,16 @@ export default {
          this.reserva.estado = info.event.extendedProps.estado;
          this.reserva.user_id = info.event.extendedProps.user_id;
          $('#editar-modal').modal({backdrop: 'static', keyboard: false, show: true});
+         
          },
     listar(){
         let me = this;
-        axios.get('http://127.0.0.1:8012/api/reserva')
+        axios.get('/api/reserva')
         .then(function(response){
             //me.pruebas = response.data.data;
             me.calendarOptions.events = response.data.data.map(event =>{
                 return {
-                    title: event.title,
+                    title: event.title+' '+event.apellido,
                     start: event.start,
                     color: event.servicios.color,
                     id: event.id,
@@ -399,7 +504,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/reserva/',{
+            axios.post('/api/reserva/',{
                 'nombre': me.reserva.nombre,
                 'apellido': me.reserva.apellido,
                 'celular': me.reserva.celular,
@@ -428,11 +533,12 @@ export default {
             this.reserva.detalle = '';
             this.reserva.servicio_id= '';
             this.reserva.operador_id= '';
-            
+            this.$v.reserva.$reset();
+            this.hasOperador = false
         },
         listarServicios(){
         let me = this;
-        axios.get('http://127.0.0.1:8012/api/servicio')
+        axios.get('/api/servicio')
         .then(function(response){
             me.servicios = response.data.data
             console.log(response.data.data)
@@ -450,7 +556,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/reserva/'+ me.reserva.id,{
+            axios.put('/api/reserva/'+ me.reserva.id,{
                 'nombre': me.reserva.nombre,
                 'apellido': me.reserva.apellido,
                 'celular': me.reserva.celular,
@@ -472,10 +578,11 @@ export default {
         },
         modalConfirmar(){
             $('#confirmarReserva-modal').modal({backdrop: 'static', keyboard: false, show: true});
+            this.hasOperador = true;
         },
         confirmarReserva(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/trabajo/',{
+            axios.post('/api/trabajo/',{
                 'nombre': me.reserva.nombre,
                 'apellido': me.reserva.apellido,
                 'celular': me.reserva.celular,
@@ -498,7 +605,7 @@ export default {
         },
         cambioEstado($id){
             let me = this;
-            axios.patch('http://127.0.0.1:8012/api/reserva/cambiar-estado/'+ $id,{
+            axios.patch('/api/reserva/cambiar-estado/'+ $id,{
                 'estado': 'confirmado'
             })
             .then(function(response){
@@ -510,7 +617,7 @@ export default {
         },
         getOperadores(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/operador')
+            axios.get('/api/operador')
             .then(function(response){
                 me.operadores = response.data.data
                 console.log(response.data)
@@ -518,7 +625,26 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
-        }
+        },
+        confirmar(reserva){
+            this.reserva.id = reserva.id;
+            this.reserva.nombre = reserva.nombre;
+            this.reserva.apellido = reserva.apellido;
+            $('#confirmar').modal({backdrop: 'static', keyboard: false, show: true});
+            $('#editar-modal').modal('hide');
+        },
+        eliminar(id){
+            let me = this;
+            axios.delete('/api/reserva/'+id)
+            .then(function(response){
+                $('#confirmar').modal('hide');
+                me.limpiar();
+                me.listar();
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
         
         
     },    

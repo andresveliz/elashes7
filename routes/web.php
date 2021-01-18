@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::middleware('auth')->group(function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('reservas','ReservaController@listar')->name('reservas.listar');
@@ -38,3 +39,6 @@ Route::get('trabajos','TrabajoController@listar')->name('trabajos.listar');
 Route::get('ventas','VentaController@listar')->name('ventas.listar');
 
 Route::get('reportes','ReporteController@listar')->name('reportes.listar');
+
+//Route::get('login','LoginController@listar')->name('login.listar');
+});

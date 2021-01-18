@@ -239,10 +239,8 @@ return [
         ],
         [
             'text'        => 'Inicio',
-            'url'         => '#',
+            'route'         => 'home',
             'icon'        => 'fas fa-fw fa-home',
-            'label'       => 4,
-            'label_color' => 'success',
         ],
         
         [

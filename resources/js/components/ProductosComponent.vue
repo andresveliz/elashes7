@@ -10,25 +10,46 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="producto.nombre" class="form-control" placeholder="Nombre">
+                <input type="text" 
+                v-model.trim="$v.producto.nombre.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.producto.nombre.$error, 'is-valid': !$v.producto.nombre.$invalid }"
+                placeholder="Nombre">
+                <div class="invalid-feedback" v-if="!$v.producto.nombre.required" >Campo Requerido</div>
                 </div>
+                
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Precio</label>
-                <input type="text" v-model="producto.precio" class="form-control" placeholder="Apellido" >
+                <input type="text" 
+                v-model.trim="$v.producto.precio.$model" 
+                class="form-control" 
+                :class="{ 'is-invalid': $v.producto.precio.$error, 'is-valid': !$v.producto.precio.$invalid }"
+                placeholder="Precio" >
+                <div class="invalid-feedback" v-if="!$v.producto.precio.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.producto.precio.minValue" >El precio debe ser mayor a 0</div>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Cantidad</label>
-                <input type="number" v-model="producto.cantidad" class="form-control" placeholder="Celular" >
+                <input type="number" 
+                v-model.trim="$v.producto.cantidad.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.producto.cantidad.$error, 'is-valid': !$v.producto.cantidad.$invalid }" 
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.producto.cantidad.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.producto.cantidad.minValue" >El campo debe ser mayor a 0</div>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Descuento</label>
-                <input type="text" v-model="producto.descuento" class="form-control" placeholder="Celular" >
+                <input type="text" 
+                v-model.trim="producto.descuento" 
+                class="form-control" 
+                placeholder="Descuento" >
                 </div>
             </div>
             <div class="col-sm-2">
@@ -36,7 +57,7 @@
                 <label>Categoria</label>
                 <select
                     class="form-control"
-                    v-model="producto.categoria_producto_id"
+                    v-model="$v.producto.categoria_producto_id.$model"
                 >
                 <option disabled value="">Categorias</option>
                 <option v-for="categoria in categorias" v-bind:value="categoria.id" :key="categoria.id">
@@ -50,14 +71,21 @@
                 <div class="form-group">
                 <label><i class="fa fa-arrow-down"></i></label>
                 <div class="input-group-append">
-                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()"><i class="fa fa-plus"></i> Agregar producto</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()"><i class="fa fa-edit"></i> Guardar Cambios</button>
+                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()" :disabled="$v.$invalid"><i class="fa fa-plus"></i> Agregar producto</button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()" :disabled="$v.$invalid"><i class="fa fa-edit"></i> Guardar Cambios</button>
                 <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; limpiar()"><i class="fa fa-times"></i></button>
                 </div>
                 </div>
             </div>
+            
             </div>
+            
+            
+            
+            
+            
         </form>
+        
         </div>
         <!-- /.card-body -->
     </div>
@@ -126,7 +154,7 @@
 
 <script>
 import Vue from 'vue';
-
+import { required, minValue } from 'vuelidate/lib/validators'
 export default {
     data(){
         return {
@@ -143,10 +171,19 @@ export default {
             boton: 'crear',
         }
     },
+    validations:{
+        producto:{
+            nombre: {required},
+            precio: {required, minValue: minValue(1)},
+            cantidad: {required, minValue:  minValue(1)},
+            categoria_producto_id: {required}
+
+        }
+    },
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/producto')
+            axios.get('/api/producto')
             .then(function(response){
                 me.productos = response.data.data
                 console.log(response.data)
@@ -157,7 +194,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/producto/',{
+            axios.post('/api/producto/',{
                 'nombre': me.producto.nombre,
                 'precio': me.producto.precio,
                 'cantidad': me.producto.cantidad,
@@ -174,7 +211,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/producto/'+ me.producto.id,{
+            axios.put('/api/producto/'+ me.producto.id,{
                 'nombre': me.producto.nombre,
                 'precio': me.producto.precio,
                 'cantidad': me.producto.cantidad,
@@ -207,7 +244,7 @@ export default {
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/producto/'+id)
+            axios.delete('/api/producto/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.limpiar();
@@ -223,10 +260,11 @@ export default {
             this.producto.cantidad = '';
             this.producto.descuento = '';
             this.producto.categoria_producto_id = '';
+            this.$v.producto.$reset();
         },
         getCategorias(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/categoria-producto')
+            axios.get('/api/categoria-producto')
             .then(function(response){
                 me.categorias = response.data.data
                 console.log(response.data)

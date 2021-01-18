@@ -29,6 +29,7 @@
         "@fullcalendar/interaction": "^5.3.1",
         "@fullcalendar/timegrid": "^5.3.1",
         "@fullcalendar/vue": "^5.3.1",
+        "chart.js": "^2.9.4",
         "icheck-bootstrap": "^3.0.1",
         "luxon": "^1.25.0",
         "moment": "^2.29.1",

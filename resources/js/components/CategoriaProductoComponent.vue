@@ -16,7 +16,7 @@
                 <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()" :disabled="$v.$invalid"><i class="fa fa-edit"></i> Guardar Cambios</button>
                 <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; categoria.nombre=''; categoria.descripcion=''; $v.categoria.nombre.$reset()"><i class="fa fa-times"></i></button>
             </div>
-             <div class="invalid-feedback" v-if="!$v.categoria.nombre.required" >Campo Requerido</div>
+            <div class="invalid-feedback" v-if="!$v.categoria.nombre.required" >Campo Requerido</div>
         </div>
        
     </div>   
@@ -103,7 +103,7 @@ export default {
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/categoria-producto')
+            axios.get('api/categoria-producto')
             .then(function(response){
                 me.categorias = response.data.data
                 console.log(response.data)
@@ -114,7 +114,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/categoria-producto/',{
+            axios.post('/api/categoria-producto/',{
                 'nombre': me.categoria.nombre,
                 'descripcion': me.categoria.descripcion
             })
@@ -130,7 +130,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/categoria-producto/'+ me.categoria.id,{
+            axios.put('/api/categoria-producto/'+ me.categoria.id,{
                 'nombre': me.categoria.nombre,
                 'descripcion': me.categoria.descripcion
             })
@@ -159,7 +159,7 @@ export default {
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/categoria-producto/'+id)
+            axios.delete('/api/categoria-producto/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.categoria.nombre = '';

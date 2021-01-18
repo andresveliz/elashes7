@@ -49,7 +49,7 @@ export default {
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/operador')
+            axios.get('/api/operador')
             .then(function(response){
                 me.operadores = response.data.data
                 console.log(response.data)
@@ -60,7 +60,7 @@ export default {
         },
         getTrabajos(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/trabajo')
+            axios.get('/api/trabajo')
             .then(function(response){
                 me.trabajos = response.data.data
                 console.log(response.data)

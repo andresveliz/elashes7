@@ -19,6 +19,7 @@ class ReservaResource extends JsonResource
             'title' => $this->nombre,
             'apellido' => $this->apellido,
             'celular' => $this->celular,
+            'fecha' => $this->fecha,
             'start' => $this->fecha .'T'.$this->hora.'.000' ,
             'hora' => $this->hora,
             'detalle' => $this->detalle,

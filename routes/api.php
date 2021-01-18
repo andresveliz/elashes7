@@ -17,13 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::post('loginok','LoginController@login');
 
+Route::middleware('auth:api')->group(function () {
 Route::resource('categoria-producto', 'CategoriaProductoController');
 
 Route::resource('categoria-servicio','CategoriaServicioController');
 
 Route::resource('operador','OperadorController');
-
+/*Route::get('operador', 'OperadorController@index');
+Route::post('operador', 'OperadorController@store');
+Route::get('operador/{operador}', 'OperadorController@show');
+Route::put('operador/{operador}', 'OperadorController@update');
+Route::delete('operador/{operador}/destroy', 'OperadorController@destroy');
+*/
 Route::resource('producto','ProductoController');
 
 Route::resource('reserva','ReservaController');
@@ -35,4 +42,7 @@ Route::resource('trabajo','TrabajoController');
 
 Route::resource('venta','VentaController');
 
-Route::resource('reporte','ReporteController');
+//Route::get('reporte','ReporteController@index');
+Route::get('reporte/codigos','ReporteController@codigoMes');
+
+});

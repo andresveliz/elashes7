@@ -4,8 +4,14 @@
     <div class="col-md-12 col-xl-12 col-lg-8">
         <small class="f-s-12 text-grey-darker">Agregar una nueva categoria</small>
         <div class="input-group">
-            <input type="text" v-model="categoria.nombre" class="form-control" placeholder="Nombre">
-            <select  :style="categoria.color !== '' ? { 'background-color': categoria.color, color: 'white'} : null" class="form-control" v-model="categoria.color">
+            <input type="text" 
+            v-model.trim="$v.categoria.nombre.$model" 
+            class="form-control" 
+            :class="{ 'is-invalid': $v.categoria.nombre.$error, 'is-valid': !$v.categoria.nombre.$invalid }"
+            placeholder="Nombre">
+            <select  :style="categoria.color !== '' ? { 'background-color': categoria.color, color: 'white'} : null" 
+            class="form-control" 
+            v-model="$v.categoria.color.$model">
                 <option disabled value="">Seleccione un color</option>
                 <option class="text-center bg-primary">#007bff</option>
                 <option class="text-center bg-lightblue">#3c8dbc</option>
@@ -17,10 +23,11 @@
                 <option class="text-center bg-orange">#ff851b</option>
             </select>
             <div class="input-group-append">
-                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()"><i class="fa fa-plus"></i> Agregar Categoria</button>
+                <button v-if="this.boton == 'crear'" type="button" class="btn btn-primary form-control" @click="crear()" :disabled="$v.$invalid"><i class="fa fa-plus"></i> Agregar Categoria</button>
                 <button v-if="this.boton == 'editar'" type="button" class="btn btn-secondary  form-control" @click="actualizar()"><i class="fa fa-edit"></i> Guardar Cambios</button>
-                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; categoria.nombre=''; categoria.color=''"><i class="fa fa-times"></i></button>
+                <button v-if="this.boton == 'editar'" type="button" class="btn btn-danger " @click="boton = 'crear'; categoria.nombre=''; categoria.color='';$v.categoria.nombre.$reset()"><i class="fa fa-times"></i></button>
             </div>
+            <div class="invalid-feedback" v-if="!$v.categoria.nombre.required" >Campo Requerido</div>
         </div>
     </div>   
 </div> <br>
@@ -73,7 +80,7 @@
               <p>Eliminar la categoria '{{categoria.nombre}}'?</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" @click="boton = 'crear'; categoria.nombre=''; categoria.color='';$v.categoria.nombre.$reset()">Cancelar</button>
               <button type="button" class="btn btn-primary" @click="eliminar(categoria.id)">Eliminar</button>
             </div>
           </div>
@@ -86,7 +93,7 @@
 
 <script>
 import Vue from 'vue';
-
+import { required } from 'vuelidate/lib/validators'
 export default {
     data(){
         return {
@@ -100,10 +107,16 @@ export default {
             isClicked: false
         }
     },
+    validations:{
+        categoria:{
+            nombre:{required},
+            color: {required}
+        }
+    },
     methods: {
         listar(){
             let me = this;
-            axios.get('http://127.0.0.1:8012/api/categoria-servicio')
+            axios.get('/api/categoria-servicio')
             .then(function(response){
                 me.categorias = response.data.data
                 console.log(response.data)
@@ -114,13 +127,14 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('http://127.0.0.1:8012/api/categoria-servicio/',{
+            axios.post('/api/categoria-servicio/',{
                 'nombre': me.categoria.nombre,
                 'color': me.categoria.color
             })
             .then(function(response){
                 me.categoria.nombre = '';
                 me.categoria.color = '';
+                me.$v.categoria.nombre.$reset();
                 me.listar();
             })
             .catch(function(error){
@@ -129,7 +143,7 @@ export default {
         },
         actualizar(){
             let me = this;
-            axios.put('http://127.0.0.1:8012/api/categoria-servicio/'+ me.categoria.id,{
+            axios.put('/api/categoria-servicio/'+ me.categoria.id,{
                 'nombre': me.categoria.nombre,
                 'color': me.categoria.color
             })
@@ -137,6 +151,7 @@ export default {
                 me.categoria.nombre = '';
                 me.categoria.color = '';
                 me.boton= 'crear'
+                me.$v.categoria.nombre.$reset()
                 me.listar();
             })
             .catch(function(error){
@@ -156,7 +171,7 @@ export default {
         },
         eliminar(id){
             let me = this;
-            axios.delete('http://127.0.0.1:8012/api/categoria-servicio/'+id)
+            axios.delete('/api/categoria-servicio/'+id)
             .then(function(response){
                 $('#confirmar').modal('hide');
                 me.categoria.nombre = '';
