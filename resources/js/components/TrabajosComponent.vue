@@ -459,7 +459,9 @@ export default {
             .then(function(response){
                 $('#crear-modal').modal('hide');
                 me.limpiar();
+                me.ticket();
                 me.listar();
+                
             })
             .catch(function(error){
                 console.log(error)
@@ -569,6 +571,10 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
+        },
+        ticket(){
+            //window.location.href = 'ticket'
+            window.open('ticket', '_blank');
         }
 
     },

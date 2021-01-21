@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Elashes')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+
 @section('content_header')
 <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>Operadores</h1>

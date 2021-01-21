@@ -26,4 +26,9 @@ class Servicio extends Model
         return $this->hasMany('App\Categoria_servicio', 'id');
     }
 
+    public function trabajos()
+    {
+        return $this->hasMany('App\Trabajo');
+    }
+
 }

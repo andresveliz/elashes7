@@ -104,7 +104,7 @@ return [
     'classes_auth_card' => 'card-outline card-primary',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
-    'classes_auth_footer' => '',
+    'classes_auth_footer' => 'd-none',
     'classes_auth_icon' => '',
     'classes_auth_btn' => 'btn-flat btn-primary',
 
@@ -232,11 +232,7 @@ return [
 
     'menu' => [
         
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
+        
         [
             'text'        => 'Inicio',
             'route'         => 'home',
@@ -260,8 +256,19 @@ return [
         ],
         [
             'text' => 'Reportes',
-            'route'  => 'reportes.listar',
-            'icon' => 'fas fa-fw fa-cash-register',
+            'icon' => 'fas fa-fw fa-calculator',
+            'submenu' => [
+                [
+                    'text' => 'Pago Diario',
+                    'route'  => 'reportes.listar',
+                ],
+                [
+                    'text' => 'Total Diario',
+                    'url'  => '#',
+                ],
+                
+            ],
+            
         ],
         [
             'text' => 'Operadores',
@@ -299,7 +306,6 @@ return [
                 
             ],
         ],
-        
     ],
 
     /*

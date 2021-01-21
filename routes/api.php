@@ -44,5 +44,6 @@ Route::resource('venta','VentaController');
 
 //Route::get('reporte','ReporteController@index');
 Route::get('reporte/codigos','ReporteController@codigoMes');
-
+Route::get('reporte/diario','ReporteController@pagoDiario');
+Route::get('reporte/ventas','ReporteController@ventaDiario');
 });

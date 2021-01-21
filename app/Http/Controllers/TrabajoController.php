@@ -42,7 +42,7 @@ class TrabajoController extends Controller
     {
         $ultimo = Trabajo::orderBy('id','desc')->first();
     
-        if((Carbon::now()->isSameMonth(Carbon::yesterday())) == true ){
+        if((Carbon::now()->isSameMonth($ultimo->fecha)) == true ){
             $contador = intval(substr($ultimo->codigo,-4))+1;
             
         }
@@ -189,6 +189,13 @@ class TrabajoController extends Controller
             'mensaje' => 'Eliminado con éxito',
         ], Response::HTTP_OK);
     }
+    
+    public function ticket()
+    {
+        $ultimo = Trabajo::orderBy('id','desc')->first();
+        return view('trabajos.ticket')->with('ultimo', $ultimo);
+    }
+
     public function listar()
     {
         return view('trabajos.index');

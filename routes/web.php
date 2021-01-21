@@ -40,5 +40,7 @@ Route::get('ventas','VentaController@listar')->name('ventas.listar');
 
 Route::get('reportes','ReporteController@listar')->name('reportes.listar');
 
+Route::get('ticket','TrabajoController@ticket')->name('trabajos.ticket');
+
 //Route::get('login','LoginController@listar')->name('login.listar');
 });

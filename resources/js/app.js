@@ -30,6 +30,7 @@ Vue.component('servicios-component', require('./components/ServiciosComponent.vu
 Vue.component('trabajos-component', require('./components/TrabajosComponent.vue').default);
 Vue.component('ventas-component', require('./components/VentasComponent.vue').default);
 Vue.component('reportes-component', require('./components/ReportesComponent.vue').default);
+Vue.component('ticket-component', require('./components/TicketComponent.vue').default);
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue').default
@@ -59,7 +60,7 @@ Vue.component(
  import trabajos from './components/TrabajosComponent';
  import ventas from './components/VentasComponent';
  import reportes from './components/ReportesComponent';
-
+ import ticket from './components/TicketComponent';
  import Vuelidate from 'vuelidate'
  Vue.use(Vuelidate)
 
@@ -75,5 +76,6 @@ const app = new Vue({
         trabajos,
         ventas,
         reportes,
+        ticket,
     }
 });
