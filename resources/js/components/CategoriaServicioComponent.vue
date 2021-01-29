@@ -94,6 +94,18 @@
 <script>
 import Vue from 'vue';
 import { required } from 'vuelidate/lib/validators'
+const Swal = require('sweetalert2');
+const Toast =  Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+})
 export default {
     data(){
         return {
@@ -136,6 +148,7 @@ export default {
                 me.categoria.color = '';
                 me.$v.categoria.nombre.$reset();
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Categoria Registrada'});
             })
             .catch(function(error){
                 console.log(error)
@@ -153,6 +166,7 @@ export default {
                 me.boton= 'crear'
                 me.$v.categoria.nombre.$reset()
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Categoria Actualizada'});
             })
             .catch(function(error){
                 console.log(error)
@@ -177,6 +191,7 @@ export default {
                 me.categoria.nombre = '';
                 me.categoria.color = '';
                 me.listar();
+                Toast.fire({icon: 'warning', title: 'Categoria Eliminada'});
             })
             .catch(function(eroor){
                 console.log(error)

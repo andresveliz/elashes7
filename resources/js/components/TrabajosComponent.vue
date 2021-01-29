@@ -27,8 +27,8 @@
                 <td>{{index+1}}</td>
                 <td>{{trabajo.nombre}} {{trabajo.apellido}}</td>
                 <td>{{trabajo.celular}}</td>
-                <td>{{trabajo.fecha}} {{trabajo.hora}}</td>
-                <td>{{trabajo.servicio.nombre}}</td>
+                <td>{{trabajo.fecha}}</td>
+                <td>{{trabajo.servicio.nombre.substr(0,27)}}</td>
                 <td>{{trabajo.operador.nombre}}</td>
                 <td>{{trabajo.codigo}}</td>
                 <td>
@@ -394,7 +394,10 @@ import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
 import { required, numeric, minValue } from 'vuelidate/lib/validators'
+import VueSweetalert2 from 'vue-sweetalert2';
 var moment = require('moment');
+const Swal = require('sweetalert2');
+Vue.use(VueSweetalert2);
 export default {
     components:{
         Datepicker
@@ -406,6 +409,7 @@ export default {
             trabajos: [],
             servicios: [],
             operadores: [],
+            user:'',
             trabajo: {
                 id: '',
                 nombre: '',
@@ -455,8 +459,14 @@ export default {
                 'detalle': me.trabajo.detalle,
                 'servicio_id': me.trabajo.servicio_id,
                 'operador_id': me.trabajo.operador_id,
+                'user_id': me.user
             })
             .then(function(response){
+                Swal.fire(
+                        'Registrado',
+                        'El codigo se registró exitosamente',
+                        'success'
+                        );
                 $('#crear-modal').modal('hide');
                 me.limpiar();
                 me.ticket();
@@ -485,6 +495,11 @@ export default {
                 me.limpiar();
                 me.boton= 'crear'
                 me.listar();
+                Swal.fire(
+                        'Modificado',
+                        'El codigo se modificó exitosamente',
+                        'success'
+                        );
             })
             .catch(function(error){
                 console.log(error)
@@ -534,6 +549,11 @@ export default {
                 $('#confirmar').modal('hide');
                 me.limpiar();
                 me.listar();
+                Swal.fire(
+                        'Eliminado',
+                        'El codigo se eliminó',
+                        'warning'
+                        );
             })
             .catch(function(error){
                 console.log(error)
@@ -572,6 +592,17 @@ export default {
                 console.log(error)
             })
         },
+        getUser(){
+            let me = this;
+            axios.get('/api/user')
+            .then(function(response){
+                me.user = response.data.id
+                console.log(response.data.id)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
         ticket(){
             //window.location.href = 'ticket'
             window.open('ticket', '_blank');
@@ -583,7 +614,8 @@ export default {
         this.listar();
         this.getServicios();
         this.getOperadores();
-        console.log('categorias')
+        this.getUser();
+        console.log(this.user)
     }
 }
 </script>

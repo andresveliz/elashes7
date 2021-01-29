@@ -51,6 +51,7 @@
                             <th>#</th>
                             <th>Nombre</th>
                             <th>Servicio</th>
+                            <th>Comision</th>
                             <th>Cod</th>
                         </tr>
                     </thead>
@@ -59,6 +60,7 @@
                             <td>{{index+1}}</td>
                             <td>{{codigo.nombre}} {{codigo.apellido}}</td>
                             <td>{{codigo.servicio.nombre}}</td>
+                            <td>{{codigo.servicio.comision}}</td>
                             <td>{{codigo.codigo}}</td>
                         </tr>
                     </tbody>
@@ -205,10 +207,12 @@ export default {
             this.filtroOperador($id).forEach(element => {
                 
                     suma = suma + element.servicio.comision
-                    if(element.servicio.categoria_servicio_id == 8)
+                    if(element.servicio.categoria_servicio_id == 1)
                     {
-                        pestanias++
-                        sub_pestanias = sub_pestanias + element.servicio.comision
+                        sub_pestanias = sub_pestanias + element.servicio.comision; 
+                        if(element.servicio.descuento == 0){
+                        pestanias++;
+                        }
                     }
                    
             });
@@ -220,10 +224,10 @@ export default {
             });
             if(pestanias>4)
             {
-                extra = ((sub_pestanias) * 0.3)
+                extra = ((sub_pestanias) * 0.2)
             }
             
-            total = suma+extra+(ventas * 15)
+            total = suma+extra+(ventas * 21)
             valores.push(pestanias, extra, ventas, total)
             return valores;
             console.log(suma)

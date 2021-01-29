@@ -91,8 +91,8 @@
             </h3>
             </div><!-- /.card-header -->
             <div class="card-body">
-            <div class="card-body table-responsive p-0">
-        <table class="table table-striped">
+            <div class="card-body table-responsive p-0" style="height:300px;">
+        <table class="table table-striped table-head-fixed text-nowrap">
             <thead>
             <tr>
                 <th style="width: 20px">#</th>
@@ -260,7 +260,7 @@ export default {
         },
         pestaniasMes(){
             var fecha = moment();
-            return this.trabajos.filter(trabajo => trabajo.servicio.categoria_servicio_id === 7)
+            return this.trabajos.filter(trabajo => trabajo.servicio.categoria_servicio_id === 1)
         },
         ventasMes(){
             var fecha = moment();

@@ -27,7 +27,8 @@ class TrabajoResource extends JsonResource
             'servicio_id' => $this->servicio_id,
             'operador_id' => $this->operador_id,
             'servicio' => $this->servicios,
-            'operador' => $this->operadores
+            'operador' => $this->operadores,
+            'user' => $this->users
             //'categoria' => CategoriaProductoResource::collection($this->categoria_producto)
         ];
     }

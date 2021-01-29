@@ -357,6 +357,8 @@ import { formatDate } from '@fullcalendar/core';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
 import { required, numeric, minValue } from 'vuelidate/lib/validators'
+
+const Swal = require('sweetalert2');
 export default {
   components: {
     FullCalendar,// make the <FullCalendar> tag available
@@ -370,6 +372,7 @@ export default {
         servicios: [],
         pruebas: [],
         operadores: [],
+        user: '',
         hasOperador: false,
         reserva: {
             id: '',
@@ -518,7 +521,11 @@ export default {
                 me.limpiar();
                 me.listar();
                 $('#crear-modal').modal('hide');
-                console.log(this.reserva)
+                Swal.fire(
+                        'Registrado',
+                        'La reserva se registró exitosamente',
+                        'success'
+                        );
             })
             .catch(function(error){
                 console.log(error)
@@ -571,6 +578,11 @@ export default {
                 me.limpiar();
                 me.boton= 'crear'
                 me.listar();
+                Swal.fire(
+                        'Modificado',
+                        'La reserva se modificó exitosamente',
+                        'success'
+                        );
             })
             .catch(function(error){
                 console.log(error)
@@ -591,13 +603,21 @@ export default {
                 'detalle': me.reserva.detalle,
                 'servicio_id': me.reserva.servicio_id,
                 'operador_id': me.reserva.operador_id,
+                'user_id': me.user
             })
             .then(function(response){
                 me.cambioEstado(me.reserva.id);
                 $('#confirmarReserva-modal').modal('hide');
                 $('#editar-modal').modal('hide');
+                Swal.fire(
+                        'Registrado',
+                        'El codigo se registró exitosamente',
+                        'success'
+                        );
+                me.ticket();
                 me.limpiar();
                 me.listar();
+                
             })
             .catch(function(error){
                 console.log(error)
@@ -640,11 +660,31 @@ export default {
                 $('#confirmar').modal('hide');
                 me.limpiar();
                 me.listar();
+                Swal.fire(
+                        'Eliminado',
+                        'La reserva se eliminó',
+                        'warning'
+                        );
             })
             .catch(function(error){
                 console.log(error)
             })
         },
+        getUser(){
+            let me = this;
+            axios.get('/api/user')
+            .then(function(response){
+                me.user = response.data.id
+                console.log(response.data.id)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
+        ticket(){
+            //window.location.href = 'ticket'
+            window.open('ticket', '_blank');
+        }
         
         
     },    
@@ -654,6 +694,7 @@ export default {
         this.eventos;
         this.listarServicios();
         this.getOperadores();
+        this.getUser();
         
     
     }    

@@ -20,5 +20,9 @@ class Reserva extends Model
     {
         return $this->belongsTo('App\Servicio', 'servicio_id');
     }
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
     
 }

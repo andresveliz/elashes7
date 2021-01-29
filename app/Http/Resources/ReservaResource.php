@@ -27,6 +27,7 @@ class ReservaResource extends JsonResource
             'user_id' => $this->user_id,
             'servicio_id' => $this->servicio_id,
             'servicio' => $this->servicios,
+            'user' => $this->users,
            // 'servicios' => ReservaResource::collection($this->reservas)
            // 'servicios' =>  ServicioResource::collection($this->servicios),
             'servicios' => new ServicioResource($this->servicios)

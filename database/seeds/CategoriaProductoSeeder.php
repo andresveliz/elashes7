@@ -12,6 +12,21 @@ class CategoriaProductoSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Categoria_producto::class, 10)->create();
+        $categoria = new Categoria_producto();
+        $categoria->nombre = 'Pestañas';
+        $categoria->descripcion = 'Productos E-lashes para pestañas';
+        $categoria->save();
+
+        $categoria = new Categoria_producto();
+        $categoria->nombre = 'Yanbal';
+        $categoria->descripcion = 'Productos Yanbal';
+        $categoria->save();
+
+        $categoria = new Categoria_producto();
+        $categoria->nombre = 'Varios';
+        $categoria->descripcion = 'Productos Varios';
+        $categoria->save();
+
+
     }
 }

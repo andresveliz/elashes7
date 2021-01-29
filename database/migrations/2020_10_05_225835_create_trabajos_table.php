@@ -22,7 +22,7 @@ class CreateTrabajosTable extends Migration
             $table->time('hora',0);
             $table->string('detalle')->nullable();
             $table->string('codigo');
-            $table->integer('user_id');
+           // $table->integer('user_id');
             //$table->foreignId('servicio_id');
             //$table->foreignId('operador_id');
             $table->timestamps();
@@ -31,6 +31,7 @@ class CreateTrabajosTable extends Migration
         Schema::table('trabajos', function (Blueprint $table) {
             $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('operador_id')->constrained('operadores')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

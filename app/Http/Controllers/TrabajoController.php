@@ -59,7 +59,7 @@ class TrabajoController extends Controller
             'celular' => 'required|numeric',
             'fecha' => 'required|date',
             'hora' => 'required',
-           // 'user_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'servicio_id' => 'required|integer',
             'operador_id' => 'required|integer'
         ]);
@@ -75,7 +75,7 @@ class TrabajoController extends Controller
             $trabajo->hora = $request->hora;
             $trabajo->detalle = $request->detalle;
             $trabajo->codigo = $completo;
-            $trabajo->user_id = 1;
+            $trabajo->user_id = $request->user_id;
             $trabajo->servicio_id = $request->servicio_id;
             $trabajo->operador_id = $request->operador_id;
 

@@ -12,6 +12,34 @@ class CategoriaServicioSeeder extends Seeder
      */
     public function run()
     {
-        factory(Categoria_servicio::class, 20)->create();
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Pestañas';
+        $categoria->color = '#007bff';
+        $categoria->save();
+
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Depilaciones';
+        $categoria->color = '#3c8dbc';
+        $categoria->save();
+
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Henna';
+        $categoria->color = '#001f3f';
+        $categoria->save();
+
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Alisado';
+        $categoria->color = '#6c757d';
+        $categoria->save();
+
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Maquillaje';
+        $categoria->color = '#ffc107';
+        $categoria->save();
+
+        $categoria = new Categoria_servicio();
+        $categoria->nombre = 'Uñas';
+        $categoria->color = '#e83e8c';
+        $categoria->save();
     }
 }

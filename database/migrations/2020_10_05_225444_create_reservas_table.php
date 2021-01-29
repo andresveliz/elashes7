@@ -22,13 +22,14 @@ class CreateReservasTable extends Migration
             $table->time('hora',0);
             $table->string('detalle')->nullable();
             $table->enum('estado',['pendiente','confirmado'])->default('pendiente');
-            $table->integer('user_id');
+           // $table->integer('user_id');
             //$table->foreignId('servicio_id');
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::table('reservas', function (Blueprint $table) {
             $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

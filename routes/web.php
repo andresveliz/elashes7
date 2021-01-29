@@ -42,5 +42,7 @@ Route::get('reportes','ReporteController@listar')->name('reportes.listar');
 
 Route::get('ticket','TrabajoController@ticket')->name('trabajos.ticket');
 
+Route::get('total','ReporteController@total')->name('reportes.total');
+
 //Route::get('login','LoginController@listar')->name('login.listar');
 });

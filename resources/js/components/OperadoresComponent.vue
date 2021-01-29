@@ -10,7 +10,7 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" 
+                <input type="text" id="name"
                 v-model.trim="$v.operador.nombre.$model" 
                 class="form-control" 
                 :class="{ 'is-invalid': $v.operador.nombre.$error, 'is-valid': !$v.operador.nombre.$invalid }"
@@ -144,6 +144,18 @@
 <script>
 import Vue from 'vue';
 import { required, numeric, minValue } from 'vuelidate/lib/validators'
+const Swal = require('sweetalert2');
+const Toast =  Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+})
 export default {
     data(){
         return {
@@ -193,6 +205,7 @@ export default {
             .then(function(response){
                 me.limpiar();
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Operador Registrado'});
             })
             .catch(function(error){
                 console.log(error)
@@ -212,6 +225,7 @@ export default {
                 me.limpiar();
                 me.boton= 'crear'
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Operador Actualizado'});
             })
             .catch(function(error){
                 console.log(error)
@@ -225,6 +239,8 @@ export default {
             this.operador.celular = operador.celular;
             this.operador.direccion = operador.direccion;
             this.boton = 'editar';
+
+            $("#name").focus();
         },
         confirmar(operador){
             this.operador.id = operador.id;
@@ -239,6 +255,7 @@ export default {
                 $('#confirmar').modal('hide');
                 me.limpiar();
                 me.listar();
+                Toast.fire({icon: 'warning', title: 'Operador Eliminado'});
             })
             .catch(function(error){
                 console.log(error)

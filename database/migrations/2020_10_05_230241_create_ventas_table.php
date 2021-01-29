@@ -26,6 +26,8 @@ class CreateVentasTable extends Migration
         });
         Schema::table('ventas', function (Blueprint $table) {
             $table->foreignId('operador_id')->nullable()->constrained('operadores');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 

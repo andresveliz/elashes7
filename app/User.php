@@ -42,4 +42,13 @@ class User extends Authenticatable
     {
         return 'profile/username';
     }
+
+    public function trabajos()
+    {
+        return $this->hasMany('App\Trabajo');
+    }
+    public function reservas()
+    {
+        return $this->hasMany('App\Reserva');
+    }
 }

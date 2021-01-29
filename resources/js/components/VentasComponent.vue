@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="">
-        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#crear-modal">Nueva Venta <i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#crear-modal" @click="abrirModal()">Nueva Venta <i class="fas fa-plus"></i></button>
     </div>
     <div class="card">
         <!-- /.card-header -->
@@ -43,7 +43,8 @@
                 </td>
                 <td>{{venta.total}}</td>
                 <td>{{venta.user_id}}</td>
-                <td>{{venta.operador_id}}</td>
+                <td v-if="venta.operador != null">{{venta.operador.nombre}}</td>
+                <td v-else> - </td>
                 <td>
                     <button type="button" class="btn btn-primary " @click="editar(venta)"><i class="fa fa-edit"></i></button>
                     <button type="button" class="btn btn-danger " @click="confirmar(venta)"><i class="fa fa-trash"></i></button>
@@ -146,7 +147,7 @@
             </div>
             <div class="col-sm-5">
                 <div class="form-group">
-                <input type="text" v-model="venta.total" class="form-control" placeholder="0" disabled>
+                    <h4 class="widget-list-desc" placeholder="0">Bs. {{venta.total}}</h4>
                 </div>
             </div>
             </div>
@@ -179,7 +180,7 @@
                 class="form-control" 
                 :class="{ 'is-invalid': $v.producto.cantidad.$error, 'is-valid': !$v.producto.cantidad.$invalid }"
                 placeholder="0" >
-                <div class="invalid-feedback" v-if="!$v.venta.apellido.minValue" >Campo numero positivo</div>
+                <div class="invalid-feedback" v-if="!$v.producto.cantidad.minValue" >Campo numero positivo</div>
                 </div>
                 
             </div>
@@ -217,7 +218,7 @@
         </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal" @click="limpiar">Cancelar</button>
-              <button type="button" class="btn btn-primary" @click="crear()" :disabled="$v.$invalid">Registrar Venta</button>
+              <button type="button" class="btn btn-primary" @click="crear()" :disabled="isInvalid()">Registrar Venta</button>
             </div>
           </div>
           </div> 
@@ -232,7 +233,9 @@
 import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
-import { required, numeric, minValue } from 'vuelidate/lib/validators'
+import { required, numeric, minValue } from 'vuelidate/lib/validators';
+
+const Swal = require('sweetalert2');
 var moment = require('moment');
 export default {
     components:{
@@ -304,10 +307,20 @@ export default {
             .then(function(response){
                 me.limpiar();
                 me.listar();
+                $('#crear-modal').modal('hide');
+                Swal.fire(
+                        'Registrado',
+                        'La venta se registró exitosamente',
+                        'success'
+                        );
             })
             .catch(function(error){
                 console.log(error)
             })
+        },
+        abrirModal(){
+            this.venta.fecha = moment().format("D MMM  YYYY"),
+            $('#crear-modal').modal({backdrop: 'static', keyboard: false, show: true});
         },
         actualizar(){
             let me = this;
@@ -349,6 +362,11 @@ export default {
                 $('#confirmar').modal('hide');
                 me.limpiar();
                 me.listar();
+                Swal.fire(
+                        'Eliminado',
+                        'La venta se eliminó',
+                        'warning'
+                        );
             })
             .catch(function(error){
                 console.log(error)
@@ -358,6 +376,9 @@ export default {
             this.pVentas.push([this.producto.id,this.producto.cantidad, (this.producto.id.precio * this.producto.cantidad)]);
             this.venta.productos.push([this.producto.id.id,this.producto.cantidad, (this.producto.id.precio * this.producto.cantidad)] )
             this.venta.total = this.pVentas.reduce(function(sum, col){ return sum  + col[2] },0);
+            this.producto.id = '';
+            this.producto.cantidad = '';
+            this.$v.producto.$reset();
             console.log(this.pVentas)
             console.log(this.venta.productos)
         },
@@ -368,7 +389,10 @@ export default {
             this.venta.total = '';
             this.venta.operador_id = '';
             this.producto.id = '';
-            this.producto.cantidad = '',
+            this.producto.cantidad = '';
+            this.pVentas.length = 0;
+            this.venta.productos = [];
+            this.pVentas = [];
             this.$v.venta.$reset();
             this.$v.producto.$reset();
         },
@@ -393,6 +417,16 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
+        },
+        isInvalid()
+        {
+            
+            if(this.$v.venta.$invalid || this.pVentas.length === 0)
+            {
+             return true;
+            }
+            else
+            return false
         }
 
     },
@@ -401,7 +435,6 @@ export default {
         this.listar();
         this.getProductos();
         this.getOperadores();
-        console.log('categorias')
         
     }
 }

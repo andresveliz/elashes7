@@ -152,6 +152,18 @@
 <script>
 import Vue from 'vue';
 import { required, minValue } from 'vuelidate/lib/validators'
+const Swal = require('sweetalert2');
+const Toast =  Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+})
 export default {
     data(){
         return {
@@ -202,6 +214,7 @@ export default {
             .then(function(response){
                 me.limpiar();
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Servicio Registrado'});
             })
             .catch(function(error){
                 console.log(error)
@@ -222,6 +235,7 @@ export default {
                 me.limpiar();
                 me.boton= 'crear'
                 me.listar();
+                Toast.fire({icon: 'success', title: 'Servicio Actualizado'});
             })
             .catch(function(error){
                 console.log(error)
@@ -249,6 +263,7 @@ export default {
                 $('#confirmar').modal('hide');
                 me.limpiar();
                 me.listar();
+                Toast.fire({icon: 'warning', title: 'Servicio Eliminado'});
             })
             .catch(function(error){
                 console.log(error)

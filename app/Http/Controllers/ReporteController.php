@@ -43,4 +43,9 @@ class ReporteController extends Controller
     {
         return view('reportes.index');
     }
+
+    public function total()
+    {
+        return view('reportes.total');
+    }
 }

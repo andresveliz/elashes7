@@ -110,7 +110,7 @@ class ServicioController extends Controller
         $this->validate($request, [
             'nombre' => 'required',
             'precio' => 'required',
-            'descuento' => 'required',
+            //'descuento' => 'required',
             'categoria_servicio_id' => 'required|integer'
         ]);
 

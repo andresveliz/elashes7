@@ -264,7 +264,7 @@ return [
                 ],
                 [
                     'text' => 'Total Diario',
-                    'url'  => '#',
+                    'route'  => 'reportes.total',
                 ],
                 
             ],

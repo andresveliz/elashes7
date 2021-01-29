@@ -17,7 +17,7 @@ class OperadorController extends Controller
      */
     public function index()
     {
-        $operador = Operador::orderBy('id','desc')->get();
+        $operador = Operador::orderBy('id','asc')->get();
         return OperadorResource::collection($operador);
     }
 
