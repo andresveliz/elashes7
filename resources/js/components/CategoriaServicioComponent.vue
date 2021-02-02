@@ -139,7 +139,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/categoria-servicio/',{
+            axios.post('/api/categoria-servicio',{
                 'nombre': me.categoria.nombre,
                 'color': me.categoria.color
             })
