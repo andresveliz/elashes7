@@ -470,7 +470,7 @@ export default {
                         );
                 $('#crear-modal').modal('hide');
                 me.limpiar();
-                me.ticket();
+               // me.ticket();
                 me.listar();
                 
             })

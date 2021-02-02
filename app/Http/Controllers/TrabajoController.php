@@ -85,6 +85,7 @@ class TrabajoController extends Controller
 
             $trabajo->save();
 
+            $this->ticket();
             DB::commit();
 
             return response()->json([
