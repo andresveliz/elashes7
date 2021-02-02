@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 //Route::post('loginok','LoginController@login');
+Route::middleware('guest')->group(function(){
+    Route::post('trabajos/ticket','TrabajoController@ticket');
+});
 
 Route::middleware('auth:api')->group(function () {
 Route::resource('categoria-producto', 'CategoriaProductoController');
@@ -47,5 +50,5 @@ Route::get('reporte/codigos','ReporteController@codigoMes');
 Route::get('reporte/diario','ReporteController@pagoDiario');
 Route::get('reporte/ventas','ReporteController@ventaDiario');
 Route::get('trabajos/ultimo','TrabajoController@ultimo');
-Route::post('trabajos/ticket','TrabajoController@ticket');
+
 });
