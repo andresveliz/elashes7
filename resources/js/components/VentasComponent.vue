@@ -296,7 +296,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/venta/',{
+            axios.post('/api/venta',{
                 'nombre': me.venta.nombre,
                 'apellido': me.venta.apellido,
                 'fecha': me.venta.fecha,

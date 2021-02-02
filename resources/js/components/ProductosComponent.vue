@@ -207,7 +207,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/producto/',{
+            axios.post('/api/producto',{
                 'nombre': me.producto.nombre,
                 'precio': me.producto.precio,
                 'cantidad': me.producto.cantidad,
@@ -295,7 +295,6 @@ export default {
     mounted(){
         this.listar();
         this.getCategorias()
-        console.log('categorias')
     }
 }
 </script>

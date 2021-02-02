@@ -2,7 +2,6 @@
 <div>
     <div class="">
         <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#crear-modal" @click="abrirModal()">Nuevo Codigo  <i class="fas fa-plus"></i></button>
-        <button type="button" class="btn btn-primary btn-lg btn-block"  @click="ticket()">Ticket  <i class="fas fa-plus"></i></button>
     </div>
     <div class="card">
         <!-- /.card-header -->
@@ -411,6 +410,7 @@ export default {
             servicios: [],
             operadores: [],
             user:'',
+            ultimo: [],
             trabajo: {
                 id: '',
                 nombre: '',
@@ -423,6 +423,15 @@ export default {
                 user_id:'',
                 servicio_id: '',
                 operador_id: ''
+            },
+            tickete:{
+                cliente: '',
+                servicio: '',
+                cod: '',
+                servicio: '',
+                fecha:'',
+                operador: ''
+
             },
             boton: 'crear',
         }
@@ -470,8 +479,9 @@ export default {
                         );
                 $('#crear-modal').modal('hide');
                 me.limpiar();
-               // me.ticket();
+                me.getUltimo();
                 me.listar();
+                setTimeout(me.ticket,2000);
                 
             })
             .catch(function(error){
@@ -604,10 +614,33 @@ export default {
                 console.log(error)
             })
         },
+        getUltimo(){
+            let me = this;
+            axios.get('/api/trabajos/ultimo')
+            .then(function(response){
+                me.ultimo = response.data.data
+                console.log(response.data)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
         ticket(){
-            //window.location.href = 'ticket'
-            window.open('http://127.0.0.1:8000/ticket', '_blank');
-        }
+            let me = this;
+            axios.post('http://127.0.0.1:8000/api/trabajos/ticket',{
+                'codigo': me.ultimo.codigo,
+                'servicio': me.ultimo.servicio.nombre,
+                'cliente': me.ultimo.nombre +' '+me.ultimo.apellido,
+                'fecha': me.ultimo.fecha +'/'+me.ultimo.hora,
+                'operador': me.ultimo.operador.nombre
+            })
+            .then(function(response){
+                console.log('ok')
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
 
     },
 
@@ -616,6 +649,7 @@ export default {
         this.getServicios();
         this.getOperadores();
         this.getUser();
+       // this.getUltimo();
         console.log(this.user)
     }
 }

@@ -166,7 +166,7 @@ export default {
         getDiario()
         {
             let me = this;
-            axios.get('/api/reporte/diario/',{
+            axios.get('/api/reporte/diario',{
                 params: {
                 'fecha': me.fecha
                 }
@@ -183,7 +183,7 @@ export default {
         getVentas()
         {
            let me = this;
-            axios.get('/api/reporte/ventas/',{
+            axios.get('/api/reporte/ventas',{
                 params: {
                 'fecha': me.fecha
                 }
@@ -297,7 +297,6 @@ export default {
         this.getDiario()
         setTimeout(this.total,3000);
         //this.total()
-        console.log('categorias'+ this.categorias)
     }
 }
 </script>

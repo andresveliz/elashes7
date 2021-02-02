@@ -85,7 +85,6 @@ class TrabajoController extends Controller
 
             $trabajo->save();
 
-            $this->ticket();
             DB::commit();
 
             return response()->json([
@@ -195,22 +194,17 @@ class TrabajoController extends Controller
         ], Response::HTTP_OK);
     }
     
-    public function ticket()
+    public function ticket(Request $request)
     {
         
-        
-       // $ultimo = Trabajo::orderBy('id','desc')->first();
-       // return view('trabajos.ticket')->with('ultimo', $ultimo);
        $connector = new WindowsPrintConnector("smb://andres-PC/EPSON TM-T20II Receipt");
        $printer = new Printer($connector);
-       $ultimo = Trabajo::orderBy('id','desc')->first();
-       $codigo = $ultimo->codigo;
-       $servicio = $ultimo->servicios->nombre;
-       $nombre  = $ultimo->nombre;
-       $apellido = $ultimo->apellido;
-       $fecha = $ultimo->fecha;
-       $hora = $ultimo->hora;
-       $operador = $ultimo->operadores->nombre;
+
+       $codigo = $request->codigo;
+       $servicio = $request->servicio;
+       $cliente  = $request->cliente;
+       $fecha = $request->fecha;
+       $operador = $request->operador;
        try{
        $printer -> setJustification(Printer::JUSTIFY_CENTER);
        $printer -> setTextSize(2, 2);
@@ -223,13 +217,11 @@ class TrabajoController extends Controller
        $printer -> setJustification(Printer::JUSTIFY_LEFT);
        $printer -> text("Cliente: ");
        $printer -> setEmphasis(false);
-       $printer -> text($nombre." ");
-       $printer -> text($apellido."\n");
+       $printer -> text($cliente."\n");
        $printer -> setEmphasis(true);
        $printer -> text("Fecha: ");
        $printer -> setEmphasis(false);
-       $printer -> text($fecha."/");
-       $printer -> text($hora."\n");
+       $printer -> text($fecha."\n");
        $printer -> setEmphasis(true);
        $printer -> text("Operador: ");
        $printer -> setEmphasis(false);
@@ -247,6 +239,11 @@ class TrabajoController extends Controller
     public function listar()
     {
         return view('trabajos.index');
+    }
+    public function ultimo(){
+
+        $ultimo = Trabajo::orderBy('id','desc')->first();
+        return new TrabajoResource($ultimo);
     }
     /*public function codigo(date $fecha)
     {

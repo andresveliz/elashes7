@@ -201,7 +201,6 @@ export default {
 
     mounted(){
         this.listar();
-        console.log('categorias'+ this.categorias)
     }
 }
 </script>

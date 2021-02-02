@@ -203,7 +203,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/servicio/',{
+            axios.post('/api/servicio',{
                 'nombre': me.servicio.nombre,
                 'precio': me.servicio.precio,
                 'descripcion': me.servicio.descripcion,
@@ -295,7 +295,6 @@ export default {
     mounted(){
         this.listar();
         this.getCategorias()
-        console.log('categorias')
     }
 }
 </script>

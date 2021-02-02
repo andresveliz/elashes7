@@ -195,7 +195,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/operador/',{
+            axios.post('/api/operador',{
                 'nombre': me.operador.nombre,
                 'apellido': me.operador.apellido,
                 'ci': me.operador.ci,
@@ -288,7 +288,6 @@ export default {
         this.listar();
         this.getUser();
         this.getTokens();
-        console.log('categorias'+ this.categorias)
     }
 }
 </script>

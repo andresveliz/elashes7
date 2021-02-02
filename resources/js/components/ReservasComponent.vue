@@ -507,7 +507,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/reserva/',{
+            axios.post('/api/reserva',{
                 'nombre': me.reserva.nombre,
                 'apellido': me.reserva.apellido,
                 'celular': me.reserva.celular,
@@ -594,7 +594,7 @@ export default {
         },
         confirmarReserva(){
             let me = this;
-            axios.post('/api/trabajo/',{
+            axios.post('/api/trabajo',{
                 'nombre': me.reserva.nombre,
                 'apellido': me.reserva.apellido,
                 'celular': me.reserva.celular,
@@ -681,10 +681,7 @@ export default {
                 console.log(error)
             })
         },
-        ticket(){
-            //window.location.href = 'ticket'
-            window.open('ticket', '_blank');
-        }
+        
         
         
     },    
@@ -696,7 +693,6 @@ export default {
         this.getOperadores();
         this.getUser();
         
-    
     }    
 
 }

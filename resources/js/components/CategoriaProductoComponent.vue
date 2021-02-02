@@ -114,7 +114,7 @@ export default {
     methods: {
         listar(){
             let me = this;
-            axios.get('api/categoria-producto')
+            axios.get('/api/categoria-producto')
             .then(function(response){
                 me.categorias = response.data.data
                 console.log(response.data)
@@ -125,7 +125,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/categoria-producto/',{
+            axios.post('/api/categoria-producto',{
                 'nombre': me.categoria.nombre,
                 'descripcion': me.categoria.descripcion
             })
@@ -189,7 +189,6 @@ export default {
 
     mounted(){
         this.listar();
-        console.log('categorias'+ this.categorias)
     }
 }
 </script>

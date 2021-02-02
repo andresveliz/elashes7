@@ -241,7 +241,6 @@ export default {
         this.getTrabajos()
         this.getDiario()
         this.getVentas()
-        console.log('categorias'+ this.categorias)
     }
 }
 </script>
