@@ -451,7 +451,7 @@ export default {
         },
         crear(){
             let me = this;
-            axios.post('/api/trabajo/',{
+            axios.post('/api/trabajo',{
                 'nombre': me.trabajo.nombre,
                 'apellido': me.trabajo.apellido,
                 'celular': me.trabajo.celular,
