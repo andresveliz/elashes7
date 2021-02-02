@@ -200,7 +200,7 @@ class TrabajoController extends Controller
         
        // $ultimo = Trabajo::orderBy('id','desc')->first();
        // return view('trabajos.ticket')->with('ultimo', $ultimo);
-       $connector = new WindowsPrintConnector("EPSON TM-T20II Receipt");
+       $connector = new WindowsPrintConnector("smb://andres-PC/EPSON TM-T20II Receipt");
        $printer = new Printer($connector);
        $ultimo = Trabajo::orderBy('id','desc')->first();
        $codigo = $ultimo->codigo;
