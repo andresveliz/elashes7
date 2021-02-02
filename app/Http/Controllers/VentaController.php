@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Venta;
+use App\Producto;
 use App\Http\Resources\VentaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -64,6 +65,7 @@ class VentaController extends Controller
            // $venta->productos()->sync($productos);
            foreach($productos as $p){
             $venta->productos()->attach(1,['producto_id'=>$p[0], 'cantidad' =>$p[1], 'sub_total' =>$p[2]]);
+            $this->descontarStock($p[0],$p[1]);
             }
             DB::commit();
 
@@ -167,5 +169,15 @@ class VentaController extends Controller
     public function listar()
     {
         return view('ventas.index');
+    }
+
+    public function descontarStock($id, $cantidad)
+    {
+        $producto = Producto::findOrFail($id);
+        $cantActual = $producto->cantidad;
+        $nuevaCantidad = $cantActual - $cantidad;
+        $producto->cantidad = $nuevaCantidad;
+
+        $producto->save();
     }
 }

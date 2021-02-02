@@ -9,6 +9,10 @@ use Illuminate\Http\Response;
 use DB;
 use Carbon\Carbon;
 
+//require __DIR__ . '/vendor/autoload.php';
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\EscposImage;
 class TrabajoController extends Controller
 {
     /**
@@ -192,8 +196,51 @@ class TrabajoController extends Controller
     
     public function ticket()
     {
-        $ultimo = Trabajo::orderBy('id','desc')->first();
-        return view('trabajos.ticket')->with('ultimo', $ultimo);
+        
+        
+       // $ultimo = Trabajo::orderBy('id','desc')->first();
+       // return view('trabajos.ticket')->with('ultimo', $ultimo);
+       $connector = new WindowsPrintConnector("EPSON TM-T20II Receipt");
+       $printer = new Printer($connector);
+       $ultimo = Trabajo::orderBy('id','desc')->first();
+       $codigo = $ultimo->codigo;
+       $servicio = $ultimo->servicios->nombre;
+       $nombre  = $ultimo->nombre;
+       $apellido = $ultimo->apellido;
+       $fecha = $ultimo->fecha;
+       $hora = $ultimo->hora;
+       $operador = $ultimo->operadores->nombre;
+       try{
+       $printer -> setJustification(Printer::JUSTIFY_CENTER);
+       $printer -> setTextSize(2, 2);
+       $img = EscposImage::load("images/logo_small.png");
+       $printer -> graphics($img);
+       $printer -> text($codigo."\n");
+       $printer -> setTextSize(1,1);
+       $printer -> setEmphasis(true);
+       $printer -> text($servicio."\n");
+       $printer -> setJustification(Printer::JUSTIFY_LEFT);
+       $printer -> text("Cliente: ");
+       $printer -> setEmphasis(false);
+       $printer -> text($nombre." ");
+       $printer -> text($apellido."\n");
+       $printer -> setEmphasis(true);
+       $printer -> text("Fecha: ");
+       $printer -> setEmphasis(false);
+       $printer -> text($fecha."/");
+       $printer -> text($hora."\n");
+       $printer -> setEmphasis(true);
+       $printer -> text("Operador: ");
+       $printer -> setEmphasis(false);
+       $printer -> text($operador."\n");
+    
+        }
+        catch (Exception $e){
+            $printer->text($e->getMessage() . "\n");
+        }
+       $printer -> cut();
+       $printer -> close();
+
     }
 
     public function listar()

@@ -256,7 +256,7 @@ export default {
         },
         reservasHoy(){
             var fecha = moment();
-           return this.reservas.filter(reserva => reserva.fecha === fecha.format('YYYY-MM-DD'))
+           return this.reservas.filter(reserva => reserva.fecha === fecha.format('YYYY-MM-DD') && reserva.estado === 'pendiente')
         },
         pestaniasMes(){
             var fecha = moment();

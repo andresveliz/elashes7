@@ -2,6 +2,7 @@
 <div>
     <div class="">
         <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#crear-modal" @click="abrirModal()">Nuevo Codigo  <i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-primary btn-lg btn-block"  @click="ticket()">Ticket  <i class="fas fa-plus"></i></button>
     </div>
     <div class="card">
         <!-- /.card-header -->

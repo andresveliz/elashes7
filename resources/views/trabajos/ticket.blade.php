@@ -1,7 +1,7 @@
-<div class="col-md-4">
-    <div style="margin-left: 40px">
-    <img src="{{asset('/images/logo.png')}}" width="80">
-    <h4>{{$ultimo->codigo}}</h4>
+<div class="col-4">
+    <div style="margin-left: 100px; margin-top: -3%; margin-bottom: -3%">
+    <img src="{{asset('/images/logo.png')}}" width="100">
+    <h3 style="margin-top: -3%"> {{$ultimo->codigo}}</h3>
     </div>
     <strong align="center">{{$ultimo->servicios->nombre}}</strong> <br>
     <strong>Cliente:</strong> {{$ultimo->nombre}} {{$ultimo->apellido}} <br>

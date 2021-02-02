@@ -166,7 +166,7 @@
                     v-model="$v.producto.id.$model"
                 >
                 <option disabled value="">Productos</option>
-                <option v-for="producto in productos" v-bind:value="{id:producto.id, nombre: producto.nombre, precio: producto.precio}" :key="producto.id">
+                <option v-for="producto in productosConStock()" v-bind:value="{id:producto.id, nombre: producto.nombre, precio: producto.precio}" :key="producto.id">
                     {{ producto.nombre }}
                 </option>
                 </select>
@@ -427,6 +427,10 @@ export default {
             }
             else
             return false
+        },
+        productosConStock()
+        {
+            return this.productos.filter(producto => producto.cantidad > 0);
         }
 
     },
