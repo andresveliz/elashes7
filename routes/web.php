@@ -30,7 +30,7 @@ Route::get('categoria-producto','CategoriaProductoController@listar')->name('cat
 
 Route::get('operadores','OperadorController@listar')->name('operadores.listar');
 
-Route::get('productos','productoController@listar')->name('productos.listar');
+Route::get('productos','ProductoController@listar')->name('productos.listar');
 
 Route::get('servicios','ServicioController@listar')->name('servicios.listar');
 
