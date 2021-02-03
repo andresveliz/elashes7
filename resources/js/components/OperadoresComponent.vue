@@ -123,7 +123,7 @@
             </tbody>
         </table>
         </div>
-        <span v-if="operadoresFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
+        <span v-if="operadoresFilter.length == 0" class="badge badge-danger">Sin resultados!!</span>
         <!-- /.card-body -->
     </div>
     <div class="modal fade" id="confirmar">
