@@ -3,12 +3,23 @@
     <div class="">
         <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#crear-modal" @click="abrirModal()">Nuevo Codigo  <i class="fas fa-plus"></i></button>
     </div>
+    
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">Trabajos Realizados</h3>
+            <div class="input-group">
+                <input type="text"
+                v-model="buscar"
+                placeholder="Buscar trabajo..."
+                class="form-control">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button> 
+            </div>
         </div>
-        <div class="card-body table-responsive p-0">
+        <paginate name="trabajosFilter" v-if="trabajosFilter.length"  :list="trabajosFilter" tag="tbody" :per="10" :refreshCurrentPage="true">
+        <div class="card-body table-responsive p-0">   
+        
         <table class="table table-striped">
             <thead>
             <tr>
@@ -23,7 +34,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(trabajo, index) in trabajos" :key="trabajo.id">
+                
+            <tr v-for="(trabajo, index) in paginated('trabajosFilter')" :key="trabajo.id">
                 <td>{{index+1}}</td>
                 <td>{{trabajo.nombre}} {{trabajo.apellido}}</td>
                 <td>{{trabajo.celular}}</td>
@@ -38,12 +50,16 @@
 
                 </td>
             </tr>
-            
+                
             </tbody>
         </table>
+        
         </div>
+        </paginate>
+        <span v-if="trabajosFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
         <!-- /.card-body -->
     </div>
+    <paginate-links for="trabajosFilter" v-if="trabajosFilter.length" :show-step-links="true"></paginate-links>
     <div class="modal fade" id="confirmar">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -395,6 +411,8 @@ import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
 import { required, numeric, minValue } from 'vuelidate/lib/validators'
 import VueSweetalert2 from 'vue-sweetalert2';
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 var moment = require('moment');
 const Swal = require('sweetalert2');
 Vue.use(VueSweetalert2);
@@ -404,12 +422,14 @@ export default {
     },
     data(){
         return {
+            paginate: ['trabajosFilter'],
             en: en,
             es: es,
             trabajos: [],
             servicios: [],
             operadores: [],
             user:'',
+            buscar: '',
             ultimo: [],
             trabajo: {
                 id: '',
@@ -424,15 +444,6 @@ export default {
                 servicio_id: '',
                 operador_id: ''
             },
-            tickete:{
-                cliente: '',
-                servicio: '',
-                cod: '',
-                servicio: '',
-                fecha:'',
-                operador: ''
-
-            },
             boton: 'crear',
         }
     },
@@ -444,6 +455,14 @@ export default {
             hora: {required},
             servicio_id: {required},
             operador_id: {required} 
+        }
+    },
+    computed: {
+        trabajosFilter: function() {
+            var textSearch = this.buscar;
+            return this.trabajos.filter(function(el){
+                return (el.nombre.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || el.apellido.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1);
+            });
         }
     },
     methods: {
@@ -654,3 +673,32 @@ export default {
     }
 }
 </script>
+<style>
+  .paginate-links{
+    width:100%;
+    list-style: none;
+    text-align: center;
+}
+.paginate-links li {
+      
+    display: inline;
+    background-color:#428bca;
+    color:#42b983;
+    padding:0.5rem;
+    margin-left:0.3rem;
+    margin-right: 0.3rem;
+    cursor:pointer;
+    border-radius: 3px;
+}
+.paginate-links li.active a{
+font-weight: bold;
+}
+.paginate-result{
+    width: 100%;
+    text-align:center;
+    margin-bottom: 1rem;
+}
+.paginate-links a {
+  color: #fff;
+}
+</style>

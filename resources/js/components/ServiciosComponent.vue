@@ -84,12 +84,21 @@
         </div>
         <!-- /.card-body -->
     </div>
- 
+    
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">servicios</h3>
+            <div class="input-group">
+                <input type="text"
+                v-model="buscar"
+                placeholder="Buscar servicio..."
+                class="form-control">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button> 
+            </div>
         </div>
+        <paginate name="serviciosFilter" v-if="serviciosFilter.length" :list="serviciosFilter" class="container paginate-list" :per="10" :refreshCurrentPage="true">
         <div class="card-body table-responsive p-0">
         <table class="table table-striped">
             <thead>
@@ -105,7 +114,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(servicio, index) in servicios" :key="servicio.id">
+                 
+            <tr v-for="(servicio, index) in paginated('serviciosFilter')" :key="servicio.id">
                 <td>{{index+1}}</td>
                 <td>{{servicio.nombre}}</td>
                 <td>{{servicio.precio}}</td>
@@ -123,8 +133,12 @@
             </tbody>
         </table>
         </div>
+        </paginate>
+        <span v-if="serviciosFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
         <!-- /.card-body -->
     </div>
+    
+    <paginate-links for="serviciosFilter" v-if="serviciosFilter.length" :show-step-links="true"></paginate-links>
     <div class="modal fade" id="confirmar">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -152,6 +166,8 @@
 <script>
 import Vue from 'vue';
 import { required, minValue } from 'vuelidate/lib/validators'
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 const Swal = require('sweetalert2');
 const Toast =  Swal.mixin({
                     toast: true,
@@ -169,6 +185,8 @@ export default {
         return {
             servicios: [],
             categorias: [],
+            buscar: '',
+            paginate: ['serviciosFilter'],
             servicio: {
                 id: '',
                 nombre: '',
@@ -187,6 +205,14 @@ export default {
             precio: {required, minValue: minValue(1)},
             comision: {required, minValue :minValue(1)},
             categoria_servicio_id: {required}
+        }
+    },
+    computed: {
+        serviciosFilter: function() {
+            var textSearch = this.buscar;
+            return this.servicios.filter(function(el){
+                return el.nombre.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1;
+            });
         }
     },
     methods: {
@@ -298,3 +324,32 @@ export default {
     }
 }
 </script>
+<style>
+  .paginate-links{
+    width:100%;
+    list-style: none;
+    text-align: center;
+}
+.paginate-links li {
+      
+    display: inline;
+    background-color:#343a40;
+    color:#ffc612;
+    padding:0.5rem;
+    margin-left:0.3rem;
+    margin-right: 0.3rem;
+    cursor:pointer;
+    border-radius: 3px;
+}
+.paginate-links li.active a{
+font-weight: bold;
+}
+.paginate-result{
+    width: 100%;
+    text-align:center;
+    margin-bottom: 1rem;
+}
+.paginate-links a {
+  color: #fff;
+}
+</style>

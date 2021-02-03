@@ -6,9 +6,19 @@
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">Ventas</h3>
+            <div class="input-group">
+                <input type="text"
+                v-model="buscar"
+                placeholder="Buscar venta..."
+                class="form-control">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button> 
+            </div>
         </div>
+        <paginate name="ventasFilter" v-if="ventasFilter.length" :list="ventasFilter"  tag="tbody" :per="10" :refreshCurrentPage="true">
         <div class="card-body table-responsive p-0">
+        
         <table class="table table-striped">
             <thead>
             <tr>
@@ -23,7 +33,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(venta, index) in ventas" :key="venta.id">
+            <tr v-for="(venta, index) in paginated('ventasFilter')" :key="venta.id">
                 <td>{{index+1}}</td>
                 <td>{{venta.nombre}} {{venta.apellido}}</td>
                 <td>{{venta.fecha}}</td>
@@ -31,7 +41,7 @@
                     <tr>
                         <th>Producto</th>
                         <th class="text-center" width="10%">Precio</th>
-                        <th class="text-center" width="10%">Cantidad</th>
+                        <th class="text-center" width="10%">Cant.</th>
                         <th class="text-right" width="20%">Subtotal</th>
                     </tr>
                     <tr v-for="(detalle, index) in venta.detalle" :key="index">
@@ -54,10 +64,13 @@
             
             </tbody>
         </table>
+        
         </div>
+        </paginate>
+        <span v-if="ventasFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
         <!-- /.card-body -->
     </div>
-
+    <paginate-links for="ventasFilter" v-if="ventasFilter.length" :show-step-links="true"></paginate-links>
     <div class="modal fade" id="confirmar">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -234,7 +247,8 @@ import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import {en, es} from 'vuejs-datepicker/dist/locale';
 import { required, numeric, minValue } from 'vuelidate/lib/validators';
-
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 const Swal = require('sweetalert2');
 var moment = require('moment');
 export default {
@@ -249,6 +263,8 @@ export default {
             productos: [],
             operadores: [],
             pVentas:[],
+            buscar: '',
+            paginate: ['ventasFilter'],
             producto: {
                 id:'',
                 producto_id: '',
@@ -280,6 +296,14 @@ export default {
         producto: {
             id: {required},
             cantidad: {required, minValue: minValue(1)}
+        }
+    },
+    computed: {
+        ventasFilter: function() {
+            var textSearch = this.buscar;
+            return this.ventas.filter(function(el){
+                return (el.nombre.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || el.apellido.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1);
+            });
         }
     },
     methods: {

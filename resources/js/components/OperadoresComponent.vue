@@ -84,7 +84,15 @@
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">Operadores</h3>
+            <div class="input-group">
+                <input type="text"
+                v-model="buscar"
+                placeholder="Buscar operador..."
+                class="form-control">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button> 
+            </div>
         </div>
         <div class="card-body table-responsive p-0">
         <table class="table table-striped">
@@ -99,7 +107,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(operador, index) in operadores" :key="index">
+            <tr v-for="(operador, index) in operadoresFilter" :key="index">
                 <td>{{index+1}}</td>
                 <td>{{operador.nombre}} {{operador.apellido}}</td>
                 <td>{{operador.ci}}</td>
@@ -115,6 +123,7 @@
             </tbody>
         </table>
         </div>
+        <span v-if="operadoresFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
         <!-- /.card-body -->
     </div>
     <div class="modal fade" id="confirmar">
@@ -161,6 +170,7 @@ export default {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             operadores: [],
+            buscar: '',
             operador: {
                 id: '',
                 nombre: '',
@@ -179,6 +189,14 @@ export default {
             ci: {required},
             celular: {required, numeric},
             direccion: {required}
+        }
+    },
+    computed: {
+        operadoresFilter: function() {
+            var textSearch = this.buscar;
+            return this.operadores.filter(function(el){
+                return (el.nombre.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1 || el.apellido.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1);
+            });
         }
     },
     methods: {

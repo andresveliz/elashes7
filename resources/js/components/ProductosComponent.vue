@@ -79,11 +79,7 @@
             </div>
             
             </div>
-            
-            
-            
-            
-            
+                
         </form>
         
         </div>
@@ -93,8 +89,17 @@
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">Productos</h3>
+            <div class="input-group">
+                <input type="text"
+                v-model="buscar"
+                placeholder="Buscar producto..."
+                class="form-control">
+                <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button> 
+            </div>
         </div>
+        <paginate name="productosFilter" v-if="productosFilter.length" :list="productosFilter" class="container paginate-list" :per="10" :refreshCurrentPage="true">
         <div class="card-body table-responsive p-0">
         <table class="table table-striped">
             <thead>
@@ -109,7 +114,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(producto, index) in productos" :key="producto.id">
+            <tr v-for="(producto, index) in paginated('productosFilter')" :key="producto.id">
                 <td>{{index+1}}</td>
                 <td>{{producto.nombre}}</td>
                 <td>{{producto.precio}}</td>
@@ -126,8 +131,11 @@
             </tbody>
         </table>
         </div>
+        </paginate>
+        <span v-if="productosFilter.length == 0" class="badge badge-danger">Sin resultados!</span>
         <!-- /.card-body -->
     </div>
+    <paginate-links for="productosFilter" v-if="productosFilter.length" :show-step-links="true"></paginate-links>
     <div class="modal fade" id="confirmar">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -156,7 +164,8 @@
 import Vue from 'vue';
 import { required, minValue } from 'vuelidate/lib/validators'
 const Swal = require('sweetalert2');
-
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 const Toast =  Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -173,6 +182,8 @@ export default {
         return {
             productos: [],
             categorias: [],
+            buscar: '',
+            paginate: ['productosFilter'],
             producto: {
                 id: '',
                 nombre: '',
@@ -191,6 +202,14 @@ export default {
             cantidad: {required, minValue:  minValue(1)},
             categoria_producto_id: {required}
 
+        }
+    },
+    computed: {
+        productosFilter: function() {
+            var textSearch = this.buscar;
+            return this.productos.filter(function(el){
+                return el.nombre.toLowerCase().indexOf(textSearch.toLowerCase()) !== -1;
+            });
         }
     },
     methods: {
