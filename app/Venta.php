@@ -14,7 +14,7 @@ class Venta extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['nombre, apellido, fecha, total, user_id, operador_id'];
+    protected $fillable = ['nombre, apellido, fecha, total, decuento, user_id, operador_id'];
 
     public function operadores()
     {
@@ -24,5 +24,10 @@ class Venta extends Model
     {
         return $this->belongsToMany('App\Producto')->withPivot('cantidad','sub_total');
     }
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
 
 }

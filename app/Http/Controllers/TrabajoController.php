@@ -78,6 +78,7 @@ class TrabajoController extends Controller
             $trabajo->fecha = \Carbon\Carbon::parse($request->fecha)->format('Y-m-d');
             $trabajo->hora = $request->hora;
             $trabajo->detalle = $request->detalle;
+            $trabajo->descuento = $request->descuento;
             $trabajo->codigo = $completo;
             $trabajo->user_id = $request->user_id;
             $trabajo->servicio_id = $request->servicio_id;
@@ -156,6 +157,7 @@ class TrabajoController extends Controller
             $trabajo->fecha = Carbon::parse($request->fecha)->format('Y-m-d');
             $trabajo->hora = $request->hora;
             $trabajo->detalle = $request->detalle;
+            $trabajo->descuento = $request->descuento;
             $trabajo->user_id = 1;
             $trabajo->servicio_id = $request->servicio_id;
             $trabajo->operador_id = $request->operador_id;

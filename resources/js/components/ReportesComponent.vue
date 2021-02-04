@@ -206,13 +206,11 @@ export default {
             let valores = []
             this.filtroOperador($id).forEach(element => {
                 
-                    suma = suma + element.servicio.comision
-                    if(element.servicio.categoria_servicio_id == 1)
+                    suma = suma + (element.servicio.comision - element.servicio.descuento - element.descuento)
+                    if(element.servicio.extra == true)
                     {
-                        sub_pestanias = sub_pestanias + element.servicio.comision; 
-                        if(element.servicio.descuento == 0){
                         pestanias++;
-                        }
+                        sub_pestanias = sub_pestanias + (element.servicio.comision - element.servicio.descuento); 
                     }
                    
             });

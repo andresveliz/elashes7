@@ -21,6 +21,7 @@ class ServicioResource extends JsonResource
             'descripcion' => $this->descripcion,
             'comision' => $this->comision,
             'descuento' => $this->descuento,
+            'extra' => $this->extra,
             'categoria_id' => $this->categoria_servicio_id,
             'categorias' => $this->categoria_servicio->nombre,
             'color' => $this->categoria_servicio->color,

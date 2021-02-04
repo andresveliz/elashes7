@@ -41,7 +41,7 @@ class ProductoSeeder extends Seeder
         $producto->precio = '150';
         $producto->cantidad = '2';
         $producto->descuento = '0';
-        $producto->categoria_producto_id = '11';
+        $producto->categoria_producto_id = '2';
         $producto->save();
 
         $producto = new Producto();
@@ -49,7 +49,7 @@ class ProductoSeeder extends Seeder
         $producto->precio = '150';
         $producto->cantidad = '2';
         $producto->descuento = '0';
-        $producto->categoria_producto_id = '21';
+        $producto->categoria_producto_id = '3';
         $producto->save();
     }
 }

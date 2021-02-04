@@ -52,7 +52,7 @@
                             </tr>
                 </td>
                 <td>{{venta.total}}</td>
-                <td>{{venta.user_id}}</td>
+                <td>{{venta.user.name}}</td>
                 <td v-if="venta.operador != null">{{venta.operador.nombre}}</td>
                 <td v-else> - </td>
                 <td>
@@ -152,6 +152,21 @@
                 </div>
             </div>
             </div> 
+            <div class="row">
+                <div class="col-sm-5">
+                <div class="form-group">
+                <label>Descuento:</label>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <input type="number" v-model="$v.venta.descuento.$model" id=""
+                    :class="{ 'is-invalid': $v.venta.descuento.$error, 'is-valid': !$v.venta.descuento.$invalid }"
+                    class="form-control" >
+                    <div class="invalid-feedback" v-if="!$v.venta.descuento.required" >Campo Requerido</div>
+                </div>
+            </div>
+            </div>
             <div class="row">
                 <div class="col-sm-5">
                 <div class="form-group">
@@ -264,6 +279,7 @@ export default {
             operadores: [],
             pVentas:[],
             buscar: '',
+            user: '',
             paginate: ['ventasFilter'],
             producto: {
                 id:'',
@@ -278,6 +294,7 @@ export default {
                 nombre: '',
                 apellido: '',
                 fecha: '',
+                descuento: '0',
                 total: 0,
                 user_id: '',
                 operador_id: '',
@@ -291,6 +308,7 @@ export default {
             nombre: {required},
             apellido: {required},
             fecha: {required},
+            descuento: {required}
 
         },
         producto: {
@@ -324,8 +342,10 @@ export default {
                 'nombre': me.venta.nombre,
                 'apellido': me.venta.apellido,
                 'fecha': me.venta.fecha,
+                'descuento': me.venta.descuento,
                 'total': me.venta.total,
                 'operador_id': me.venta.operador_id,
+                'user_id': me.user,
                 'productos': me.venta.productos
             })
             .then(function(response){
@@ -352,6 +372,7 @@ export default {
                 'nombre': me.venta.nombre,
                 'apellido': me.venta.apellido,
                 'fecha': me.venta.fecha,
+                'descuento': me.descuento,
                 'operador_id': me.venta.operador_id,
                 'total': me.venta.total,
                 
@@ -370,6 +391,7 @@ export default {
             this.venta.nombre = venta.nombre;
             this.venta.apellido = venta.apellido;
             this.venta.fecha = venta.fecha;
+            this.venta.descuento = venta.descuento;
             this.venta.operador_id = venta.operador_id;
             this.venta.total = venta.total;
             
@@ -410,6 +432,7 @@ export default {
             this.venta.nombre = '';
             this.venta.apellido = '';
             this.venta.fecha = '';
+            this.venta.descuento = '0';
             this.venta.total = '';
             this.venta.operador_id = '';
             this.producto.id = '';
@@ -455,7 +478,18 @@ export default {
         productosConStock()
         {
             return this.productos.filter(producto => producto.cantidad > 0);
-        }
+        },
+        getUser(){
+            let me = this;
+            axios.get('/api/user')
+            .then(function(response){
+                me.user = response.data.id
+                console.log(response.data.id)
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        },
 
     },
 
@@ -463,6 +497,7 @@ export default {
         this.listar();
         this.getProductos();
         this.getOperadores();
+        this.getUser();
         
     }
 }

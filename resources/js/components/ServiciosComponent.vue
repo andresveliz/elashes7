@@ -10,7 +10,7 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" 
+                <input type="text" id="name"
                 v-model.trim="$v.servicio.nombre.$model" 
                 class="form-control" 
                 :class="{ 'is-invalid': $v.servicio.nombre.$error, 'is-valid': !$v.servicio.nombre.$invalid }"
@@ -30,7 +30,7 @@
                 <div class="invalid-feedback" v-if="!$v.servicio.precio.minValue" >El precio debe ser mayor a 0</div>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
                 <label>Descripcion</label>
                 <textarea type="text" v-model="servicio.descripcion" class="form-control" placeholder="Descripcion" > </textarea>
@@ -48,10 +48,21 @@
                 <div class="invalid-feedback" v-if="!$v.servicio.comision.minValue" >El campo debe ser mayor a 0</div>
                 </div>
             </div>
+            <div class="col-sm-0.5">
+                <div class="form-group">
+                <label>Extra</label>
+                <span class="form-control">
+                <input type="checkbox" name="extra" v-model="servicio.extra">
+                </span>
+                </div>
+            </div>
             <div class="col-sm-1">
                 <div class="form-group">
                 <label>Descuento</label>
-                <input type="text" v-model="servicio.descuento" class="form-control" placeholder="0,0" >
+                <input type="text" v-model="$v.servicio.descuento.$model" class="form-control" placeholder="0,0"
+                :class="{ 'is-invalid': $v.servicio.descuento.$error, 'is-valid': !$v.servicio.descuento.$invalid }" >
+                <div class="invalid-feedback" v-if="!$v.servicio.descuento.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.servicio.descuento.minValue" >El campo debe ser 0 o mayor</div>
                 </div>
             </div>
             <div class="col-sm-2">
@@ -193,6 +204,7 @@ export default {
                 precio: '',
                 descripcion: '',
                 comision: '',
+                extra: false,
                 descuento: '',
                 categoria_servicio_id: ''
             },
@@ -203,6 +215,7 @@ export default {
         servicio:{
             nombre: {required},
             precio: {required, minValue: minValue(1)},
+            descuento: {required, minValue: minValue(0)},
             comision: {required, minValue :minValue(1)},
             categoria_servicio_id: {required}
         }
@@ -234,6 +247,7 @@ export default {
                 'precio': me.servicio.precio,
                 'descripcion': me.servicio.descripcion,
                 'comision': me.servicio.comision,
+                'extra': me.servicio.extra,
                 'descuento': me.servicio.descuento,
                 'categoria_servicio_id': me.servicio.categoria_servicio_id
             })
@@ -253,6 +267,7 @@ export default {
                 'precio': me.servicio.precio,
                 'descripcion': me.servicio.descripcion,
                 'comision': me.servicio.comision,
+                'extra': me.servicio.extra,
                 'descuento': me.servicio.descuento,
                 'categoria_servicio_id': me.servicio.categoria_servicio_id
                 
@@ -274,8 +289,11 @@ export default {
             this.servicio.descripcion = servicio.descripcion;
             this.servicio.comision = servicio.comision;
             this.servicio.descuento = servicio.descuento;
+            this.servicio.extra = servicio.extra;
             this.servicio.categoria_servicio_id = servicio.categoria_id;
             this.boton = 'editar';
+
+            $("#name").focus();
         },
         confirmar(servicio){
             this.servicio.id = servicio.id;
@@ -301,6 +319,7 @@ export default {
             this.servicio.descripcion = '';
             this.servicio.comision = '';
             this.servicio.descuento = '';
+            this.servicio.extra = false;
             this.servicio.categoria_servicio_id = '';
             this.$v.servicio.$reset();
         },

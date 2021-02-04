@@ -177,6 +177,17 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
+                <label>Descuento</label>
+                <input type="number" 
+                v-model.trim="$v.trabajo.descuento.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.trabajo.descuento.$error, 'is-valid': !$v.trabajo.descuento.$invalid }" 
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.descuento.required" >Campo Requerido</div>
+                </div>
+            </div>
+            <div class="col-sm-4"> 
+                <div class="form-group">
                 <label>Detalle</label>
                 <textarea v-model="trabajo.detalle" class="form-control" placeholder="Detalle"> </textarea>
                 </div>
@@ -289,6 +300,17 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
+                <label>Descuento</label>
+                <input type="number" 
+                v-model.trim="$v.trabajo.descuento.$model" 
+                class="form-control"
+                :class="{ 'is-invalid': $v.trabajo.descuento.$error, 'is-valid': !$v.trabajo.descuento.$invalid }" 
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.trabajo.descuento.required" >Campo Requerido</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
                 <label>Detalle</label>
                 <textarea v-model="trabajo.detalle" class="form-control" placeholder="Detalle"> </textarea>
                 </div>
@@ -324,19 +346,19 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" v-model="trabajo.nombre" class="form-control" placeholder="Nombre" readonly>
+                <h6>{{trabajo.nombre}}</h6>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Apellido</label>
-                <input type="text" v-model="trabajo.apellido" class="form-control" placeholder="Apellido" readonly>
+                <h6>{{trabajo.apellido}}</h6>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Celular</label>
-                <input type="text" v-model="trabajo.celular" class="form-control" placeholder="Celular" readonly>
+                <h6>{{trabajo.celular}}</h6>
                 </div>
             </div>
             </div>
@@ -344,49 +366,43 @@
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Fecha</label>
-                <input type="text" v-model="trabajo.fecha" class="form-control" readonly>
+                <h6>{{trabajo.fecha}}</h6>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
                 <label>Hora</label>
-                <input type="time" v-model="trabajo.hora" class="form-control" readonly>
+                <h6>{{trabajo.hora}}</h6>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Servicio</label>
-                <select
-                    class="form-control"
-                    v-model="trabajo.servicio_id"
-                    disabled
-                >
-                <option disabled value="">Servicio</option>
-                <option v-for="servicio in servicios" v-bind:value="servicio.id" :key="servicio.id">
-                    {{ servicio.nombre }}
-                </option>
-                </select>
+                <h6>{{trabajo.servicio}}</h6>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Operador</label>
-                <select
-                    class="form-control"
-                    v-model="trabajo.operador_id"
-                    disabled
-                >
-                <option disabled value="">Operador</option>
-                <option v-for="operador in operadores" v-bind:value="operador.id" :key="operador.id">
-                    {{ operador.nombre }}
-                </option>
-                </select>
+                <h6>{{trabajo.operador}}</h6>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                <label>Descuento</label>
+                <h6>{{trabajo.descuento}}</h6>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                 <label>Detalle</label>
-                <textarea v-model="trabajo.detalle" class="form-control" placeholder="Detalle" readonly> </textarea>
+                <h6>{{trabajo.detalle}}</h6>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                <label>Usuario</label>
+                <h6>{{trabajo.user}}</h6>
                 </div>
             </div>
             
@@ -440,9 +456,12 @@ export default {
                 hora: '',
                 detalle: '',
                 codigo: '',
+                descuento: '0',
                 user_id:'',
                 servicio_id: '',
-                operador_id: ''
+                operador_id: '',
+                operador: '',
+                servicio: '',
             },
             boton: 'crear',
         }
@@ -453,6 +472,7 @@ export default {
             apellido: {required},
             celular: {required, numeric},
             hora: {required},
+            descuento: {required},
             servicio_id: {required},
             operador_id: {required} 
         }
@@ -486,6 +506,7 @@ export default {
                 'fecha': me.trabajo.fecha,
                 'hora': me.trabajo.hora,
                 'detalle': me.trabajo.detalle,
+                'descuento': me.trabajo.descuento,
                 'servicio_id': me.trabajo.servicio_id,
                 'operador_id': me.trabajo.operador_id,
                 'user_id': me.user
@@ -516,6 +537,7 @@ export default {
                 'fecha': me.trabajo.fecha,
                 'hora': me.trabajo.hora,
                 'detalle': me.trabajo.detalle,
+                'descuento': me.trabajo.descuento,
                 //'user_id': 
                 'servicio_id': me.trabajo.servicio_id,
                 'operador_id': me.trabajo.operador_id
@@ -556,8 +578,10 @@ export default {
             this.trabajo.fecha = trabajo.fecha;
             this.trabajo.hora = trabajo.hora;
             this.trabajo.detalle = trabajo.detalle;
-            this.trabajo.servicio_id = trabajo.servicio_id;
-            this.trabajo.operador_id = trabajo.operador_id;
+            this.trabajo.descuento = trabajo.descuento;
+            this.trabajo.servicio = trabajo.servicio.nombre;
+            this.trabajo.operador = trabajo.operador.nombre;
+            this.trabajo.user = trabajo.user.name;
             this.boton = 'editar';
             $('#info-modal').modal({backdrop: 'static', keyboard: false, show: true});
         },

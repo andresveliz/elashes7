@@ -19,6 +19,7 @@ class CreateVentasTable extends Migration
             $table->string('apellido');
             $table->date('fecha');
             $table->double('total',8 ,2);
+            $table->double('decuento')->default('0');
             //$table->integer('user_id');
             //$table->foreignId('operador_id')->nullable();
             $table->timestamps();

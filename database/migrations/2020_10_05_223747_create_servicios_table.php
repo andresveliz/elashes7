@@ -19,7 +19,8 @@ class CreateServiciosTable extends Migration
             $table->double('precio', 8, 2);
             $table->text('descripcion')->nullable();
             $table->double('comision', 8, 2);
-            $table->double('descuento', 8, 2)->nullable();
+            $table->double('descuento', 8, 2)->default('0');
+            $table->boolean('extra')->default(false);
             //$table->foreignId('categoria_id')->index();
             $table->timestamps();
             $table->softDeletes();

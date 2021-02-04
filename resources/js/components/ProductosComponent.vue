@@ -10,7 +10,7 @@
                 <!-- text input -->
                 <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" 
+                <input type="text" id="name"
                 v-model.trim="$v.producto.nombre.$model" 
                 class="form-control" 
                 :class="{ 'is-invalid': $v.producto.nombre.$error, 'is-valid': !$v.producto.nombre.$invalid }"
@@ -47,9 +47,12 @@
                 <div class="form-group">
                 <label>Descuento</label>
                 <input type="text" 
-                v-model.trim="producto.descuento" 
+                v-model.trim="$v.producto.descuento.$model" 
                 class="form-control" 
-                placeholder="Descuento" >
+                :class="{ 'is-invalid': $v.producto.descuento.$error, 'is-valid': !$v.producto.descuento.$invalid }"
+                placeholder="0" >
+                <div class="invalid-feedback" v-if="!$v.producto.descuento.required" >Campo Requerido</div>
+                <div class="invalid-feedback" v-if="!$v.producto.descuento.minValue" >El campo debe ser 0 o mayor</div>
                 </div>
             </div>
             <div class="col-sm-2">
@@ -200,6 +203,7 @@ export default {
             nombre: {required},
             precio: {required, minValue: minValue(1)},
             cantidad: {required, minValue:  minValue(1)},
+            descuento: {required, minValue:  minValue(0)},
             categoria_producto_id: {required}
 
         }
@@ -270,6 +274,8 @@ export default {
             this.producto.descuento = producto.descuento;
             this.producto.categoria_producto_id = producto.categoria_id;
             this.boton = 'editar';
+
+            $("#name").focus();
         },
         confirmar(producto){
             this.producto.id = producto.id;

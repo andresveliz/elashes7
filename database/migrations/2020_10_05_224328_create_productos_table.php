@@ -18,7 +18,7 @@ class CreateProductosTable extends Migration
             $table->string('nombre');
             $table->double('precio',8 ,2);
             $table->integer('cantidad');
-            $table->double('descuento',8 ,2)->nullable();
+            $table->double('descuento',8 ,2)->default('0');
             //$table->foreignId('categoria_id');
             $table->timestamps();
             $table->softDeletes();

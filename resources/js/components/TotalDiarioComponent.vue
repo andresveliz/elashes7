@@ -5,8 +5,9 @@
     <small class="f-s-12 text-grey-darker">Seleccione la fecha:</small>
     <datepicker  :language="es" :open-date="openDate" v-model="fecha" @selected="dia()" input-class="form-control bg-info"></datepicker>
     </div>
-    <input type="button" onclick="print(toPrint)" value="print" />
-
+    <button class="btn  btn-default btn-sm" type="submit" @click="print('toPrint')">
+            <i class="fa fa-print"></i>
+    </button>
     </div> <br>
 
     <div class="invoice p-3 mb-3" id="toPrint">
@@ -226,7 +227,7 @@ export default {
             });
             
             tventas= this.ventas.reduce((total, item)=>{
-               return total + item.total;
+               return total + (item.total - item.descuento);
             }, 0)
             total = ((bruto + tventas) - comisiones)
              this.valores.push(bruto, comisiones, tventas, total)
@@ -247,14 +248,12 @@ export default {
             let tventas
             this.filtroOperador($id).forEach(element => {
                 
-                    suma = suma + element.servicio.comision
-                    subtotal_caja = subtotal_caja + element.servicio.precio
-                    if(element.servicio.categoria_servicio_id == 1)
+                    suma = suma + (element.servicio.comision - element.servicio.descuento - element.descuento)
+                    subtotal_caja = subtotal_caja + (element.servicio.precio - element.servicio.descuento)
+                    if(element.servicio.extra == true)
                     {
-                        sub_pestanias = sub_pestanias + element.servicio.comision; 
-                        if(element.servicio.descuento == 0){
                         pestanias++;
-                        }
+                        sub_pestanias = sub_pestanias + (element.servicio.comision - element.servicio.descuento); 
                     }
                    
             });
@@ -278,7 +277,7 @@ export default {
         },
         print(imp1)
         {
-            var printContents = document.getElementById('.toPrint').innerHTML;
+            var printContents = document.getElementById(imp1).innerHTML;
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = printContents;

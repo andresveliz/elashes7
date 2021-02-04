@@ -63,7 +63,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Cejas';
         $servicio->comision = '12';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '11';
+        $servicio->categoria_servicio_id = '2';
         $servicio->save();
 
         $servicio = new Servicio();
@@ -72,7 +72,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Bozo';
         $servicio->comision = '10';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '11';
+        $servicio->categoria_servicio_id = '2';
         $servicio->save();
 
         $servicio = new Servicio();
@@ -81,7 +81,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Cejas';
         $servicio->comision = '12';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '11';
+        $servicio->categoria_servicio_id = '2';
         $servicio->save();
 
         $servicio = new Servicio();
@@ -90,7 +90,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Rostro completo con cera';
         $servicio->comision = '40';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '11';
+        $servicio->categoria_servicio_id = '3';
         $servicio->save();
 
         $servicio = new Servicio();
@@ -99,7 +99,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Cejas';
         $servicio->comision = '17';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '21';
+        $servicio->categoria_servicio_id = '3';
         $servicio->save();
 
         $servicio = new Servicio();
@@ -108,7 +108,7 @@ class ServicioSeeder extends Seeder
         $servicio->descripcion = 'Cejas';
         $servicio->comision = '12';
         $servicio->descuento = '0';
-        $servicio->categoria_servicio_id = '31';
+        $servicio->categoria_servicio_id = '4';
         $servicio->save();
 
 

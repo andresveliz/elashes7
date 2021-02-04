@@ -54,6 +54,7 @@ class ServicioController extends Controller
             $servicio->precio = $request->precio;
             $servicio->descripcion = $request->descripcion;
             $servicio->comision = $request->comision;
+            $servicio->extra = $request->extra;
             $servicio->descuento = $request->descuento;
             $servicio->categoria_servicio_id = $request->categoria_servicio_id;
 
@@ -122,6 +123,7 @@ class ServicioController extends Controller
             $servicio->precio = $request->precio;
             $servicio->descripcion = $request->descripcion;
             $servicio->comision = $request->comision;
+            $servicio->extra = $request->extra;
             $servicio->descuento = $request->descuento;
             $servicio->categoria_servicio_id = $request->categoria_servicio_id;
 

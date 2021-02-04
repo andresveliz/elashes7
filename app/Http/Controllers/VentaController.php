@@ -45,7 +45,7 @@ class VentaController extends Controller
             'nombre' => 'required|string',
             'apellido' => 'required|string',
             'fecha' => 'required',
-           // 'user_id' => 'required|integer'
+            'user_id' => 'required|integer'
         ]);
 
         try {
@@ -55,8 +55,9 @@ class VentaController extends Controller
             $venta->nombre = $request->nombre;
             $venta->apellido = $request->apellido;
             $venta->fecha = Carbon::parse($request->fecha)->format('Y-m-d');
+            $venta->decuento = $request->descuento;
             $venta->total = $request->total;
-            $venta->user_id = 1;
+            $venta->user_id = $request->user_id;
             $venta->operador_id = $request->operador_id;
 
             $venta->save();
@@ -129,7 +130,8 @@ class VentaController extends Controller
             $venta->nombre = $request->nombre;
             $venta->apellido = $request->apellido;
             $venta->fecha = $request->fecha;
-            $venta->total = '100';
+            $venta->decuento = $request->descuento;
+            $venta->total = $request->total;
             $venta->user_id = $request->user_id;
             $venta->operador_id = $request->operador_id;
 

@@ -22,13 +22,14 @@ class TrabajoResource extends JsonResource
             'fecha' => $this->fecha,
             'hora' => $this->hora,
             'detalle' => $this->detalle,
+            'descuento' => $this->descuento,
             'codigo' => $this->codigo,
             'user_id' => $this->user_id,
             'servicio_id' => $this->servicio_id,
             'operador_id' => $this->operador_id,
             'servicio' => $this->servicios,
             'operador' => $this->operadores,
-            'user' => $this->users
+            'user' => $this->users,
             //'categoria' => CategoriaProductoResource::collection($this->categoria_producto)
         ];
     }
